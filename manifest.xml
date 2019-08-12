@@ -1,66 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns="http://www.w7.cc" versionCode="">
-	
-	<application setting='false'>
-		<name><![CDATA[活动报名_小活动]]></name>
 
-		<identifie><![CDATA[event_registration]]></identifie>
+    <application setting='false'>
+        <name><![CDATA[活动报名_小活动]]></name>
 
-		<version><![CDATA[1.0.2]]></version>
+        <identifie><![CDATA[event_registration]]></identifie>
 
-		<ability><![CDATA[]]></ability>
+        <version><![CDATA[1.0.2]]></version>
 
-		<type><![CDATA[]]></type>
+        <ability><![CDATA[]]></ability>
 
-		<description><![CDATA[这年头，凑齐全班同学一起吃顿饭，也是一件挺不容易的事情。
+        <type><![CDATA[]]></type>
 
-在群里提出老同学聚会的请求，却没有多少人回应，尴尬。
+        <description><![CDATA[
+			这年头，凑齐全班同学一起吃顿饭，也是一件挺不容易的事情。
 
-难道非得一个个找他们问才行吗？
+		在群里提出老同学聚会的请求，却没有多少人回应，尴尬。
 
-那得多麻烦呀！
+		难道非得一个个找他们问才行吗？
 
-不如试试“小活动”这个约局小程序吧。
+		那得多麻烦呀！
 
-组织者只需在这个小程序中创建一个活动，然后把它甩到群里，让他们自己点击报名就行。]]></description>
+		不如试试“小活动”这个约局小程序吧。
 
-		<author><![CDATA[hc88888888]]></author>
+		组织者只需在这个小程序中创建一个活动，然后把它甩到群里，让他们自己点击报名就行。
+		]]>
 
-		<url><![CDATA[]]></url>
+		</description>
 
-		<setting><![CDATA[]]></setting>
+        <author><![CDATA[hc88888888]]></author>
 
-	</application>
+        <url><![CDATA[]]></url>
 
-	
-	<platform>
-		<rule embed="false" />
+        <setting><![CDATA[]]></setting>
 
-		<rule embed="false" />
+    </application>
 
-	<supports>
 
-			<item type="app" />
-	</supports>
+    <platform>
+        <rule embed="false"/>
 
-	</platform>
+        <rule embed="false"/>
 
-	
-	<bindings>
+        <supports>
 
-		<cover>
-			<entry title="活动报名" do="index" state="index" direct="" />
-		</cover>
+            <item type="app"/>
+        </supports>
 
-		<menu>
-			<entry title="首页" do="index" state="index" direct="" />
-			<entry title="小活动" do="list" state="list" direct="" />
-			<entry title="活动详情" do="details" state="details" direct="" />
-		</menu>
+    </platform>
 
-	</bindings>
 
-	<install><![CDATA[]]></install>
-	<uninstall><![CDATA[]]></uninstall>
-	<upgrade><![CDATA[]]></upgrade>
+    <bindings>
+
+        <cover>
+            <entry title="活动报名" do="index" state="index" direct=""/>
+        </cover>
+
+        <menu>
+            <entry title="首页" do="index" state="index" direct=""/>
+            <entry title="小活动" do="list" state="list" direct=""/>
+            <entry title="活动详情" do="details" state="details" direct=""/>
+        </menu>
+
+    </bindings>
+
+    <install><![CDATA[]]></install>
+    <uninstall><![CDATA[]]></uninstall>
+    <upgrade><![CDATA[]]></upgrade>
 </manifest>

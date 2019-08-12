@@ -3,7 +3,7 @@
  * event_registration模块定义
  *
  * @author hc88888888
- * @url w
+ * @url
  */
 defined('IN_IA') or exit('Access Denied');
 
