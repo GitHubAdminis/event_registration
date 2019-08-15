@@ -22,6 +22,7 @@ class Event_registrationModuleSite extends WeModuleSite {
     public function doMobileWelcome() {
         // 这个操作被定义用来呈现 功能封面
         global $_W, $_GPC;
+        echo $_W;
         include $this->template('welcome');
     }
 
