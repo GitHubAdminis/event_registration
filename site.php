@@ -122,23 +122,15 @@ class Event_registrationModuleSite extends WeModuleSite {
         }
 
         $sql = "select * from " . tablename('apply_vip_order');
-        $sources = pdo_fetchall($sql);
-        var_dump('srouces', $sources);
+        $sources = pdo_fetchall($sql); // 总结果集数组
 
         $total = count($sources); // 总记录条数
-        var_dump('total', $total);
-        $page_index = max($_GPC['page'],1);
-        var_dump('page_index', $page_index);
-        $page_size = 2; // 单页条数
-        var_dump('page_size', $page_size);
+        $page_index = max($_GPC['page'],1); // 当前页数
+        $page_size = 3; // 单页条数
         $pager = pagination($total, $page_index, $page_size);
-        var_dump('pager', $pager);
-        $p = ($page_index - 1) * 2;
-        var_dump('p', $p);
+        $p = ($page_index - 1) * 3; // 未知
         $sql .= " order by id asc limit " . $p . ", " . $page_size;
-        var_dump('sql', $sql);
-        $order_list = pdo_fetchall($sql);
-        var_dump('order_list', $order_list);
+        $order_list = pdo_fetchall($sql); // 取出结果集数组
 
         /*$servername = "39.104.26.166";
         $username = "we7_demo_test";
