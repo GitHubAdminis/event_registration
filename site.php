@@ -12,18 +12,89 @@ class Event_registrationModuleSite extends WeModuleSite {
     // 前台方法
     public function doMobileIndex() {
         // 这个操作被定义用来呈现 功能封面
+        include $this->template('common/header');
+
         global $_W, $_GPC;
-        echo "<a href='" . $this->createMobileUrl('index') . "'>clickme</a>";
-        echo "<a href='google.com'>clickme</a>";
+        echo "http://we7.think2009.com/app/" . $this->createMobileUrl('index') . '<br/>';
+        echo "<a href='" . $this->createMobileUrl('index') . "'>MobileUrl</a>";
+        echo "<a href='google.com'>google.com</a>";
+        echo "<a href='" . $this->createWebUrl('details') . "'>WebUrl</a>";
+
+        $name = 'PhpStorm';
+        $arr = ['Vue', 'Angular', 'React'];
         echo '<h1>Hello World!</h1>';
+
+        // 创建路由
+        echo 'MODULE_URL' . MODULE_URL . '<br/>';
+//        var_dump($_GPC) . '<br/><br><br>';
+        echo '<br/>';
+//        var_dump($_W) . '<br/>';
+
+
+        $servername = "39.104.26.166";
+        $username = "we7_think2009_c";
+        $password = "CyiBWHnY5x";
+        $dbname = "we7_think2009_c";
+
+        // 创建连接
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // 检测连接
+        if ($conn->connect_error) {
+            die("连接失败: " . $conn->connect_error);
+        }
+
+
+//        数据库 增删改查
+//        $sql = "INSERT INTO apply_vip_user (id, category_name, create_time) VALUES ('11', 'Nginx', 'john@example.com')";
+//        $sql = "delete from apply_vip_user where id = 8";
+//        $sql = "UPDATE apply_vip_user set category_name = 'MySql Tutorial' where id = 9";
+        $sql = "select * from ims_apply_vip_user";
+
+        if ($conn->query($sql) == TRUE) {
+            echo "New record inserted successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+
+        $res = $conn->query($sql);
+
+        echo json_encode($res);
+        $arr = array();
+        if($res->num_rows > 0){
+            while($rows = $res->fetch_assoc()){
+                $arr[] = $rows;  // [{}, {}, {}]
+                array_push($arr,$rows);
+            }
+        }
+        echo json_encode($arr);
+        echo json_encode($arr['id']);
+        var_dump(json_encode($arr['id']));
+
+        $conn->close();
+
+
+//        $category = array('category_name' => 'php video', 'create_time' => 'fe');
+//        $result = pdo_insert("apply_vip_user", $category, $replace = false);
+//        var_dump($result);
+
+        $userinfo = mc_oauth_userinfo($_W['uniacid']);
+        var_dump($userinfo);
+
         include $this->template('index');
+
+        include $this->template('common/footer');
     }
 
     public function doMobileWelcome() {
         // 这个操作被定义用来呈现 功能封面
         global $_W, $_GPC;
-        echo $_W;
         include $this->template('welcome');
+    }
+
+    public function doMobileMessageBoard() {
+        global $_W, $_GPC;
+        include $this->template('');
+
     }
 
 
@@ -31,19 +102,76 @@ class Event_registrationModuleSite extends WeModuleSite {
     public function doWebIndex() {
         // 这个操作被定义用来呈现 管理中心导航菜单
         global $_W, $_GPC;
-        include $this->template('index');
+        include $this->template('activity');
     }
 
     public function doWebList() {
         // 这个操作被定义用来呈现 管理中心导航菜单
         global $_W, $_GPC;
-        include $this->template('list');
+
+        $servername = "39.104.26.166";
+        $username = "we7_think2009_c";
+        $password = "CyiBWHnY5x";
+        $dbname = "we7_think2009_c";
+
+        // 创建连接
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // 检测连接
+        if ($conn->connect_error) {
+            die("连接失败: " . $conn->connect_error);
+        }
+
+        $sql = "select * from " . tablename('apply_vip_order');
+        $sources = pdo_fetchall($sql);
+        var_dump('srouces', $sources);
+
+        $total = count($sources); // 总记录条数
+        var_dump('total', $total);
+        $page_index = max($_GPC['page'],1);
+        var_dump('page_index', $page_index);
+        $page_size = 2; // 单页条数
+        var_dump('page_size', $page_size);
+        $pager = pagination($total, $page_index, $page_size);
+        var_dump('pager', $pager);
+        $p = ($page_index - 1) * 2;
+        var_dump('p', $p);
+        $sql .= " order by id asc limit " . $p . ", " . $page_size;
+        var_dump('sql', $sql);
+        $order_list = pdo_fetchall($sql);
+        var_dump('order_list', $order_list);
+
+        /*$servername = "39.104.26.166";
+        $username = "we7_demo_test";
+        $password = "101001";
+        $dbname = "we7_demo_test";
+
+        // 创建连接
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // 检测连接
+        if ($conn->connect_error) {
+            die("连接失败: " . $conn->connect_error);
+        }
+
+        $sql = 'select * from apply_vip_order';
+        $res = $conn->query($sql);
+        echo json_encode($res);
+        $arr = array();
+        if($res->num_rows > 0){
+            while($rows = $res->fetch_assoc()){
+                $arr[] = $rows;  // [{}, {}, {}]
+                array_push($arr,$rows);
+            }
+        }
+
+        echo json_encode($arr);*/
+
+        include $this->template('order');
     }
 
     public function doWebDetails() {
         // 这个操作被定义用来呈现 管理中心导航菜单
         global $_W, $_GPC;
-        include $this->template('details');
+        include $this->template('user');
     }
 
 
