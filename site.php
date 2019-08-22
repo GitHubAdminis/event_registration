@@ -60,10 +60,10 @@ class Event_registrationModuleSite extends WeModuleSite {
 
         echo json_encode($res);
         $arr = array();
-        if($res->num_rows > 0){
-            while($rows = $res->fetch_assoc()){
+        if ($res->num_rows > 0) {
+            while ($rows = $res->fetch_assoc()) {
                 $arr[] = $rows;  // [{}, {}, {}]
-                array_push($arr,$rows);
+                array_push($arr, $rows);
             }
         }
         echo json_encode($arr);
@@ -79,6 +79,19 @@ class Event_registrationModuleSite extends WeModuleSite {
 
         $userinfo = mc_oauth_userinfo($_W['uniacid']);
         var_dump($userinfo);
+        $user = pdo_get('apply_vip_user', array('open_id' => $userinfo['open_id']));
+
+        if (!$user) {
+            $to_user = array(
+                'open_id' => $userinfo['openid'],
+                'nickname' => $userinfo['nickname'],
+                'profile_photo' => $userinfo['headimgUrl'],
+                'authorize_time' => time()
+            );
+
+            pdo_insert('apply_vip_user', $to_user);
+        }
+
 
         include $this->template('index');
 
@@ -102,6 +115,10 @@ class Event_registrationModuleSite extends WeModuleSite {
     public function doWebIndex() {
         // 这个操作被定义用来呈现 管理中心导航菜单
         global $_W, $_GPC;
+        $userinfo = mc_oauth_userinfo($_W['uniacid']);
+
+        $activity_data = pdo_get('apply_vip_activity', array('id'=>1));
+
         include $this->template('activity');
     }
 
@@ -109,7 +126,7 @@ class Event_registrationModuleSite extends WeModuleSite {
         // 这个操作被定义用来呈现 管理中心导航菜单
         global $_W, $_GPC;
 
-        $servername = "39.104.26.166";
+        /*$servername = "39.104.26.166";
         $username = "we7_think2009_c";
         $password = "CyiBWHnY5x";
         $dbname = "we7_think2009_c";
@@ -119,13 +136,13 @@ class Event_registrationModuleSite extends WeModuleSite {
         // 检测连接
         if ($conn->connect_error) {
             die("连接失败: " . $conn->connect_error);
-        }
+        }*/
 
         $sql = "select * from " . tablename('apply_vip_order');
         $sources = pdo_fetchall($sql); // 总结果集数组
 
         $total = count($sources); // 总记录条数
-        $page_index = max($_GPC['page'],1); // 当前页数
+        $page_index = max($_GPC['page'], 1); // 当前页数
         $page_size = 3; // 单页条数
         $pager = pagination($total, $page_index, $page_size);
         $p = ($page_index - 1) * 3; // 未知
@@ -163,6 +180,18 @@ class Event_registrationModuleSite extends WeModuleSite {
     public function doWebDetails() {
         // 这个操作被定义用来呈现 管理中心导航菜单
         global $_W, $_GPC;
+
+        $sql = "select * from " . tablename('apply_vip_user');
+        $sources = pdo_fetchall($sql); // 总结果集数组
+
+        $total = count($sources); // 总记录条数
+        $page_index = max($_GPC['page'], 1); // 当前页数
+        $page_size = 3; // 单页条数
+        $pager = pagination($total, $page_index, $page_size);
+        $p = ($page_index - 1) * 3; // 未知
+        $sql .= " order by id asc limit " . $p . ", " . $page_size;
+        $user_list = pdo_fetchall($sql); // 取出结果集数组
+
         include $this->template('user');
     }
 
