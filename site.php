@@ -117,7 +117,29 @@ class Event_registrationModuleSite extends WeModuleSite {
         global $_W, $_GPC;
         $userinfo = mc_oauth_userinfo($_W['uniacid']);
 
-        $activity_data = pdo_get('apply_vip_activity', array('id'=>1));
+        $activity_data = pdo_get('apply_vip_activity', array('id' => 1));
+
+        if ($_W['ispost']) {
+            $up_activity = [
+                'id' => 1,
+                'title' => $_GPC['title'],
+                'content' => $_GPC['content'],
+                'price' => $_GPC['price'],
+                'custom_share_icon' => $_GPC['custom_share_icon'],
+                'custom_share_title' => $_GPC['custom_share_title'],
+                'custom_share_describe' => $_GPC['custom_share_describe'],
+                'custom_share_website' => $_GPC['custom_share_website'],
+                'creation_time' => time()
+            ];
+
+            $result = pdo_insert('apply_vip_activity', $up_activity, true);
+            if ($result) {
+                message('update successfully!', $this->createWebUrl('index'), 'success');
+            } else {
+                message('The system is error!', $this->createWebUrl('index'), 'error');
+            }
+
+        }
 
         include $this->template('activity');
     }
