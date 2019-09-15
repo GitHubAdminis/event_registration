@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+</head>
+<body>
+<form id="form" action="" method="get" onsubmit="return false">
+    <input name="title" />
+    <input type="submit" value="submit">
+</form>
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
+
+
+    $('#form').click = function () {
+        let title = $("input[name='title']").attr("value");
+        console.log(title)
+    }
+</script>
+</html>

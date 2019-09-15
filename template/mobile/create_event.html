@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>{$activity_data['title']}</title>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="{$_W['siteroot']}/addons/event_registration/css/mui.min.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="{$_W['siteroot']}/addons/event_registration/css/app.css"/>
+    <!--<link href="../css/mui.picker.css" rel="stylesheet" />
+    <link href="../css/mui.dtpicker.css" rel="stylesheet" />-->
+    <link rel="stylesheet" type="text/css" href="{$_W['siteroot']}/addons/event_registration/css/mui.picker.min.css"/>
+    <style>
+        html,
+        body,
+        .mui-content {
+            height: 0;
+            margin: 0;
+            background-color: #FFFFFF;
+        }
+
+        h5.mui-content-padded {
+            margin-left: 3px;
+            margin-top: 20px !important;
+        }
+
+        h5.mui-content-padded:first-child {
+            margin-top: 12px !important;
+        }
+
+        .mui-btn {
+            font-size: 16px;
+            padding: 8px;
+            margin: 3px;
+        }
+
+        .ui-alert {
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 16px;
+        }
+
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .title-input {
+            width: 100%;
+            height: 50px;
+            padding-left: 10px;
+            box-sizing: border-box;
+            border: none;
+            border-top: 1px solid rgb(246, 246, 246);
+            border-bottom: 1px solid rgb(246, 246, 246);
+            margin-top: 10px;
+            line-height: 55px;
+        }
+
+        .textarea {
+            border: none;
+            height: 200px;
+            width: 100%;
+            font-size: 17px;
+            box-sizing: border-box;
+        }
+
+        .btn-date {
+            display: flex;
+            flex-direction: row;
+            height: 50px;
+            padding: 0 10px;
+            line-height: 50px;
+            border-top: 1px solid rgb(246, 246, 246);
+            border-bottom: 1px solid rgb(246, 246, 246);
+            position: relative;
+            align-items: center;
+        }
+
+        .btn-time {
+            display: flex;
+            flex-direction: row;
+            height: 50px;
+            padding: 0 10px;
+            line-height: 50px;
+            /*border-top: 1px solid rgb(246, 246, 246);*/
+            /*border-bottom: 1px solid rgb(246, 246, 246);*/
+            position: relative;
+            align-items: center;
+        }
+
+        .btn-location {
+            display: flex;
+            flex-direction: row;
+            height: 50px;
+            padding: 0 10px;
+            line-height: 50px;
+            border-top: 1px solid rgb(246, 246, 246);
+            border-bottom: 1px solid rgb(246, 246, 246);
+            position: relative;
+            align-items: center;
+        }
+
+        .btn-date #input_date {
+            position: absolute;
+            right: 25px;
+            width: 90px;
+            color: #777;
+            border: none;
+        }
+
+        .btn-time #input_time {
+            position: absolute;
+            right: 25px;
+            width: 90px;
+            color: #777;
+            border: none;
+        }
+
+        .btn-location .select-location {
+            border: none;
+            padding-left: 10px;
+            width: 90%;
+        }
+
+        .arrow-right {
+            width: 12px;
+            height: 12px;
+            border: 0 solid rgb(216, 216, 216);
+            border-right-width: 2px;
+            border-top-width: 2px;
+            transform: rotate(45deg);
+            position: absolute;
+            right: 15px;
+            top: 17px;
+        }
+
+        .date-word {
+            margin-left: 10px;
+        }
+
+        .time-word {
+            margin-left: 10px;
+        }
+
+        .icon-img {
+            width: 30px;
+            height: 30px;
+        }
+
+        #submit_btn {
+            width: 95%;
+            margin: 30px auto;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            height: 45px;
+        }
+
+        /*amap */
+        .amap_container {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+
+</head>
+
+<body>
+<!--<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">dtpicker（日期时间选择器）</h1>
+</header>-->
+<div class="mui-content">
+    <div class="content-padded">
+        <form id="form" method="post" onsubmit="return onSubmit()">
+            <!--        <h2>{$activity_data['title']}</h2>-->
+            <h3>创建活动</h3>
+            <input class="title-input" name="title" placeholder="活动标题" id="event_title" type="text"
+                   style="width: 100%;height: 50px;padding-left: 15px;box-sizing: border-box;border: none;border-top: 1px solid rgb(246, 246, 246);border-bottom: 1px solid rgb(246, 246, 246);margin-top: 10px;line-height: 55px;margin-bottom: 0;"/>
+            <textarea class="textarea" name="description" placeholder="活动描述"></textarea>
+            <!--<p>
+                {php $main_body = html_entity_decode($activity_data[content]);}
+                {php echo $main_body;}
+            </p>-->
+            <!--        <p style="margin-top: 2%; text-align: center; font-size: 1.5em">apply fee: {$activity_data['price']}元</p>-->
+
+            <!--        <div style="{if empty($is_activity)}{else}display:none{/if}">-->
+
+            <div data-options='{"type":"date"}' class="btn btn-date btn-block">
+                <img class="icon-img img-date" src="{$_W['siteroot']}/addons/event_registration/images/calender.png"/>
+                <div class="date-word">活动日期</div>
+                <!--                <div id="input_date" name="date">选择日期</div>-->
+                <input id="input_date" value="" name="date" placeholder="选择日期"/>
+                <div class="arrow-right"></div>
+            </div>
+            <div data-options='{"type":"time"}' class="btn btn-time btn-block">
+                <img class="icon-img img-time" src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
+                <div class="time-word">活动时间</div>
+                <!--                <div id="input_time" name="time">选择时间</div>-->
+                <input id="input_time" value="" name="time" placeholder="选择时间"/>
+                <div class="arrow-right"></div>
+            </div>
+            <div class="btn-location">
+                <img class="icon-img img-time" src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
+                <input class="select-location" name="address" placeholder="活动地址"/>
+            </div>
+            <input type="submit" id="submit_btn" value="确认创建"/>
+        </form>
+    </div>
+
+
+</div>
+
+<!--amap-->
+<!--<div class="amap_container" id="amap_container"></div>-->
+
+<!--amap api-->
+<!--<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=380738f4e7a917a0965ec42ec1607dfe"></script>-->
+
+<script src="{$_W['siteroot']}/addons/event_registration/js/mui.min.js"></script>
+<!--<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.dtpicker.js"></script>-->
+<script src="{$_W['siteroot']}/addons/event_registration/js/mui.picker.min.js"></script>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
+
+    let input_date = $('#input_date')[0];
+    let input_time = $('#input_time')[0];
+    (function ($) {
+        $.init();
+        var result = $('#result')[0];
+        var btn_date = $('.btn-date');
+        btn_date.each(function (i, btn) {
+            btn.addEventListener('tap', function () {
+                var _self = this;
+                if (_self.picker) {
+                    _self.picker.show(function (rs) {
+                        result.innerText = '选择结果: ' + rs.text;
+                        _self.picker.dispose();
+                        _self.picker = null;
+                    });
+                } else {
+                    var optionsJson = this.getAttribute('data-options') || '{}';
+                    var options = JSON.parse(optionsJson);
+                    var id = this.getAttribute('id');
+                    /*
+                     * 首次显示时实例化组件
+                     * 示例为了简洁，将 options 放在了按钮的 dom 上
+                     * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+                     */
+                    _self.picker = new $.DtPicker(options);
+                    _self.picker.show(function (rs) {
+                        /*
+                         * rs.value 拼合后的 value
+                         * rs.text 拼合后的 text
+                         * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+                         * rs.m 月，用法同年
+                         * rs.d 日，用法同年
+                         * rs.h 时，用法同年
+                         * rs.i 分（minutes 的第二个字母），用法同年
+                         */
+                        // var result = $('#demo4')[0];
+                        // result.innerText = '选择结果: ' + rs.text;
+
+                        input_date.value = rs.text;
+                        console.log('date: ', rs.text);
+                        /*
+                         * 返回 false 可以阻止选择框的关闭
+                         * return false;
+                         */
+                        /*
+                         * 释放组件资源，释放后将将不能再操作组件
+                         * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+                         * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+                         * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+                         */
+                        _self.picker.dispose();
+                        _self.picker = null;
+                    });
+                }
+
+            }, false);
+        });
+
+        var btn_time = $('.btn-time');
+        btn_time.each(function (i, btn) {
+            btn.addEventListener('tap', function () {
+                var _self = this;
+                if (_self.picker) {
+                    _self.picker.show(function (rs) {
+                        result.innerText = '选择结果: ' + rs.text;
+                        _self.picker.dispose();
+                        _self.picker = null;
+                    });
+                } else {
+                    var optionsJson = this.getAttribute('data-options') || '{}';
+                    var options = JSON.parse(optionsJson);
+                    var id = this.getAttribute('id');
+                    /*
+                     * 首次显示时实例化组件
+                     * 示例为了简洁，将 options 放在了按钮的 dom 上
+                     * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+                     */
+                    _self.picker = new $.DtPicker(options);
+                    _self.picker.show(function (rs) {
+                        /*
+                         * rs.value 拼合后的 value
+                         * rs.text 拼合后的 text
+                         * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+                         * rs.m 月，用法同年
+                         * rs.d 日，用法同年
+                         * rs.h 时，用法同年
+                         * rs.i 分（minutes 的第二个字母），用法同年
+                         */
+                        // var result = $('#demo5')[0];
+                        // result.innerText = '选择结果: ' + rs.text;
+
+                        input_time.value = rs.text;
+                        console.log('time: ', rs.text);
+                        /*
+                         * 返回 false 可以阻止选择框的关闭
+                         * return false;
+                         */
+                        /*
+                         * 释放组件资源，释放后将将不能再操作组件
+                         * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+                         * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+                         * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+                         */
+                        _self.picker.dispose();
+                        _self.picker = null;
+                    });
+                }
+
+            }, false);
+        });
+
+    })(mui);
+
+
+    function onSubmit() {
+        // console.log('onSubmit');
+
+        let title = $('input[name="title"]').val();
+        let description = $('textarea[name="description"]').val();
+        let date = $('input[name="date"]').val();
+        let time = $('input[name="time"]').val();
+        let address = $('input[name="address"]').val();
+
+        // console.log('title', title);
+        // console.log('description', description);
+        // console.log('date: ', input_date.innerText, 'time: ', input_time.innerText);
+        // console.log('date: ', date, 'time: ', time);
+        // console.log('address: ', address);
+
+        if (title === '') {
+            mui.toast('请填写活动标题');
+            return false;
+        } else if (description === '') {
+            mui.toast('请填写活动描述');
+            return false;
+        } else if (date === '') {
+            mui.toast('请选择活动日期');
+            return false;
+        } else if (time === '') {
+            mui.toast('请选择活动时间');
+            return false;
+        } else if (address === '') {
+            mui.toast('请填写活动地址');
+            return false;
+        } else {
+            return true;
+            // window.location.href = "{php echo $this->createMobileUrl('index');}";
+            // window.history.back(-1);
+        }
+
+        // window.location.href = "{php echo $this->createMobileUrl('index');}";
+        // window.history.back(-1);
+    }
+
+
+    function submit_btn() {
+        console.log('#submit_btn');
+        window.location.href = "{php echo $this->createMobileUrl('index');}"
+    }
+
+
+</script>
+
+</body>
+
+</html>
