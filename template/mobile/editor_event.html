@@ -183,10 +183,10 @@
     <div class="content-padded">
         <form id="form" method="post" onsubmit="return onSubmit()">
             <!--        <h2>{$activity_data['title']}</h2>-->
-            <h3>创建活动</h3>
-            <input class="title-input" name="title" value="" placeholder="活动标题" id="event_title" type="text"
-                   style="width: 100%;height: 50px;padding-left: 15px;box-sizing: border-box;border: none;border-top: 1px solid rgb(246, 246, 246);border-bottom: 1px solid rgb(246, 246, 246);margin-top: 10px;line-height: 55px;margin-bottom: 0;"/>
-            <textarea class="textarea" name="description" placeholder="活动描述"></textarea>
+            <h3>编辑活动</h3>
+            <input class="title-input" name="title" placeholder="活动标题" id="event_title" type="text"
+                   style="width: 100%;height: 50px;padding-left: 15px;box-sizing: border-box;border: none;border-top: 1px solid rgb(246, 246, 246);border-bottom: 1px solid rgb(246, 246, 246);margin-top: 10px;line-height: 55px;margin-bottom: 0;" value="{$activity_data['title']}"/>
+            <textarea class="textarea" name="description" placeholder="活动描述">{$activity_data['description']}</textarea>
             <!--<p>
                 {php $main_body = html_entity_decode($activity_data[content]);}
                 {php echo $main_body;}
@@ -199,21 +199,21 @@
                 <img class="icon-img img-date" src="{$_W['siteroot']}/addons/event_registration/images/calender.png"/>
                 <div class="date-word">活动日期</div>
                 <!--                <div id="input_date" name="date">选择日期</div>-->
-                <input id="input_date" value="" name="date" placeholder="选择日期"/>
+                <input id="input_date" value="{$activity_data['date']}" name="date" placeholder="选择日期"/>
                 <div class="arrow-right"></div>
             </div>
             <div data-options='{"type":"time"}' class="btn btn-time btn-block">
                 <img class="icon-img img-time" src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
                 <div class="time-word">活动时间</div>
                 <!--                <div id="input_time" name="time">选择时间</div>-->
-                <input id="input_time" value="" name="time" placeholder="选择时间"/>
+                <input id="input_time" value="{$activity_data['time']}" name="time" placeholder="选择时间"/>
                 <div class="arrow-right"></div>
             </div>
             <div class="btn-location">
                 <img class="icon-img img-time" src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
-                <input class="select-location" name="address" placeholder="活动地址"/>
+                <input class="select-location" value="{$activity_data['address']}" name="address" placeholder="活动地址"/>
             </div>
-            <input type="submit" id="submit_btn" value="确认创建"/>
+            <input type="submit" id="submit_btn" value="保存"/>
         </form>
     </div>
 
@@ -363,7 +363,7 @@
         // console.log('date: ', date, 'time: ', time);
         // console.log('address: ', address);
 
-        if (title === '') {
+       /* if (title === '') {
             mui.toast('请填写活动标题');
             return false;
         } else if (description === '') {
@@ -378,11 +378,11 @@
         } else if (address === '') {
             mui.toast('请填写活动地址');
             return false;
-        } else {
+        } else {*/
             return true;
             // window.location.href = "{php echo $this->createMobileUrl('index');}";
             // window.history.back(-1);
-        }
+        // }
 
         // window.location.href = "{php echo $this->createMobileUrl('index');}";
         // window.history.back(-1);

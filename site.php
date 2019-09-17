@@ -10,11 +10,32 @@ defined('IN_IA') or exit('Access Denied');
 class Event_registrationModuleSite extends WeModuleSite {
 
     // 前台方法
+    public function doMobileGuide() {
+        include $this->template('common/header');
+
+        global $_W, $_GPC;
+
+        include $this->template('guide');
+    }
+
     public function doMobileIndex() {
         // 这个操作被定义用来呈现 功能封面
         include $this->template('common/header');
 
         global $_W, $_GPC;
+//        $sql = "select activity.title, activity.date, activity.time, banner.url from " .tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.b_id = banner.c_id";
+        $sql_apply = "select activity.title, activity.date, activity.time, banner.url from " .tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.status = 0";
+//        'select activity.title, activity.date, activity.time, banner.url from apply_vip_activity as activity, apply_vip_banner as banner where activity.status = 0';
+//        var_dump($sql_apply);die();
+
+        $activity_data_apply = pdo_fetchall($sql_apply); // 取出结果集数组
+//        var_dump($activity_data_apply);die();
+
+        $sql_issue = "select activity.title, activity.date, activity.time, banner.url from " .tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.status = 1";
+
+        $activity_data_issue = pdo_fetchall($sql_issue); // 取出结果集数组
+//        var_dump($user_list);die();
+
 //        echo "http://we7.think2009.com/app/" . $this->createMobileUrl('index') . '<br/>';
 //        echo "<a href='" . $this->createMobileUrl('index') . "'>MobileUrl</a>";
 //        echo "<a href='" . $this->createWebUrl('details') . "'>WebUrl</a>";
@@ -84,11 +105,11 @@ class Event_registrationModuleSite extends WeModuleSite {
         }*/
 
         // query activity data
-        $activity_data_apply = pdo_get('apply_vip_activity', array('status' => 0));
-        $activity_data_join = pdo_get('apply_vip_activity', array('status' => 1));
+//        $activity_data_apply = pdo_get('apply_vip_activity', array('status' => 0));
+//        $activity_data_issue = pdo_get('apply_vip_activity', array('status' => 1));
 
         // query user is activity or not
-        $is_activity = pdo_get('apply_vip_order', array('open_id' => $userinfo['openid'], 'status' => 1));
+//        $is_activity = pdo_get('apply_vip_order', array('open_id' => $userinfo['openid'], 'status' => 1));
 
 //        $conn->close();
 
@@ -177,7 +198,7 @@ class Event_registrationModuleSite extends WeModuleSite {
         };
 
         $userinfo = mc_oauth_userinfo($_W['uniacid']);
-//        var_dump($userinfo);
+        // var_dump($userinfo);
         $user = pdo_get('apply_vip_user', array('open_id' => $userinfo['openid']));
 
         if (!$user) {
@@ -195,8 +216,7 @@ class Event_registrationModuleSite extends WeModuleSite {
                 'country' => $userinfo['country'],
                 'subscribe_time' => time(),
                 'mobile' => $userinfo['mobile'],
-                'realname' => $userinfo['realname'],
-
+                'realname' => $userinfo['realname']
             );
 
             pdo_insert('apply_vip_user', $to_user);
@@ -210,6 +230,34 @@ class Event_registrationModuleSite extends WeModuleSite {
 
 
         include $this->template('create_event');
+    }
+
+
+    public function doMobileEditor_Event() {
+
+        global $_W, $_GPC;
+
+        $activity_data = pdo_get('apply_vip_activity');
+
+        // include $this->template('common/header');
+        if ($_W['ispost']) {
+            $to_activity = array(
+                'id' => 222,
+                'title' => $_GPC['title'],
+                'description' => $_GPC['description'],
+                'date' => $_GPC['date'],
+                'time' => $_GPC['time'],
+                'address' => $_GPC['address'],
+                'status' => 0,
+                'creation_time' => time()
+            );
+
+            $result = pdo_insert('apply_vip_activity', $to_activity, true);
+
+        };
+
+        include $this->template('editor_event');
+
     }
 
 
@@ -272,14 +320,13 @@ class Event_registrationModuleSite extends WeModuleSite {
         global $_W, $_GPC;
         $userinfo = mc_oauth_userinfo($_W['uniacid']);
 
-        $activity_data = pdo_get('apply_vip_activity', array('id' => $_GPC['id']));
+        $activity_data = pdo_get('apply_vip_activity');
 
-        /*if ($_W['ispost']) {
+        if ($_W['ispost']) {
+
             $up_activity = [
-                'id' => $_GPC['id'],
+//                'id' => $_GPC['id'],
                 'title' => $_GPC['title'],
-                'content' => $_GPC['content'],
-                'price' => $_GPC['price'],
                 'custom_share_icon' => $_GPC['custom_share_icon'],
                 'custom_share_title' => $_GPC['custom_share_title'],
                 'custom_share_describe' => $_GPC['custom_share_describe'],
@@ -288,13 +335,14 @@ class Event_registrationModuleSite extends WeModuleSite {
             ];
 
             $result = pdo_insert('apply_vip_activity', $up_activity, true);
+
             if ($result) {
                 message('update successfully!', $this->createWebUrl('index'), 'success');
             } else {
                 message('The system is error!', $this->createWebUrl('index'), 'error');
             }
 
-        }*/
+        }
 
         include $this->template('activity');
     }
@@ -365,11 +413,6 @@ class Event_registrationModuleSite extends WeModuleSite {
         $sql .= " order by id asc limit " . $p . ", " . $page_size;
         $order_list = pdo_fetchall($sql); // 取出结果集数组
 
-        /*$servername = "39.104.26.166";
-        $username = "we7_demo_test";
-        $password = "101001";
-        $dbname = "we7_demo_test";
-
         // 创建连接
         $conn = new mysqli($servername, $username, $password, $dbname);
         // 检测连接
@@ -388,7 +431,7 @@ class Event_registrationModuleSite extends WeModuleSite {
             }
         }
 
-        echo json_encode($arr);*/
+        echo json_encode($arr);
 
         include $this->template('order');
     }

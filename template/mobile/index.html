@@ -23,24 +23,36 @@
             margin-top: 50px;
         }
 
+        .mui-bar-nav {
+            background-color: white;
+        }
+
+        .mui-bar-nav.mui-bar .mui-icon {
+            color: black;
+        }
+
         .slider-bar {
             display: flex;
             justify-content: space-around;
-            height: 55px;
-            line-height: 65px;
+            height: 60px;
+            line-height: 60px;
             background-color: white;
             position: fixed;
             width: 100%;
-            top: 0;
+            bottom: 0;
             z-index: 1;
         }
 
         .slider-bar .control-item {
-
+            font-size: 18px;
+            color: #9d9d9d;
         }
 
         .slider-bar .active {
-            border-bottom: 2px solid;
+            border-bottom: 4px solid #f26546;
+            height: 47px;
+            border-radius: 2px;
+            color: black;
         }
 
         .slider-group {
@@ -58,8 +70,8 @@
 
         .activity-list .list-cell .banner {
             width: 100%;
-            height: 200px;
-            border-radius: 10px 10px 0 0;
+            height: 160px;
+            /*border-radius: 10px 10px 0 0;*/
         }
 
         .activity-list .list-cell .title {
@@ -74,51 +86,57 @@
             color: white;
         }
 
-        .activity-list .list-cell .date-time {
+        .activity-info {
+            display: flex;
+            justify-content: space-between;
             position: relative;
+            padding: 0 15px;
             top: -15px;
+        }
+
+        .activity-list .list-cell .date-time {
             display: flex;
             align-items: center;
-            margin: 0 20px;
-            padding-bottom: 10px;
             font-size: 19px;
             color: rgb(94, 94, 94);
-            border-bottom: 2px solid rgb(246, 246, 246);
         }
 
         .activity-list .list-cell .line-img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
         }
 
         .activity-list .list-cell .apply-people-number {
-            position: relative;
-            top: -7px;
             display: flex;
             align-items: center;
-            margin: 0 20px;
-            padding-bottom: 10px;
             font-size: 19px;
             color: rgb(94, 94, 94);
         }
 
         .add-btn {
-            font-size: 34px;
-            width: 50px;
-            height: 50px;
-            background-color: yellow;
-            line-height: 50px;
+            width: 70px;
+            height: 70px;
+            color: white;
+            background-color: #f26546;
+            line-height: 70px;
             text-align: center;
             border-radius: 50%;
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 50%;
+            margin-left: -35px;
+            z-index: 1;
+            font-size: 65px;
         }
     </style>
 </head>
 
 <body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">活动助手</h1>
+</header>
 <div id="app" class="">
 
     <div class="slider-bar">
@@ -131,122 +149,64 @@
     <div class="slider-group">
         <div v-if="clickSwitchValue === 0">
             <div class="activity-list">
+
+                {loop $activity_data_apply $key $value}
                 <a href="{php echo $this->createMobileUrl('details');}">
                     <div class="list-cell">
-                        <img class="banner" src="{$_W['siteroot']}/addons/event_registration/images/cbd.jpg"/>
-                        <div class="title">{$activity_data_apply['title']}</div>
-                        <div class="date-time">
-                            <img class="date-time-img line-img"
-                                 src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
-                            {$activity_data_apply['date']} {$activity_data_apply['time']}
-                        </div>
-                        <div class="apply-people-number">
-                            <img class="people-number-img line-img"
-                                 src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
-                            2 人报名
+                        <!-- <img class="banner" src="{$_W['siteroot']}/addons/event_registration/images/cbd.jpg"/>-->
+                        <img class="banner" src="{$value['url']}"/>
+                        <!-- <div class="title">{$activity_data_apply['title']}</div>-->
+                        <div class="title">{$value['title']}</div>
+                        <div class="activity-info">
+                            <div class="date-time">
+                                <img class="date-time-img line-img"
+                                     src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
+                                <!-- {$activity_data_apply['date']} {$activity_data_apply['time']}-->
+                                {php echo date('m/d', strtotime($value['date']));} {$value['time']}
+                            </div>
+                            <div class="apply-people-number">
+                                <img class="people-number-img line-img"
+                                     src="{$_W['siteroot']}/addons/event_registration/images/people.png"/>
+                                2 人报名
+                            </div>
                         </div>
                     </div>
                 </a>
-                <div class="list-cell">
-                    <img class="banner" src="{$_W['siteroot']}/addons/event_registration/images/cbd.jpg"/>
-                    <div class="title">{$activity_data_apply['title']}</div>
-                    <div class="date-time">
-                        <img class="date-time-img line-img"
-                             src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
-                        {$activity_data_apply['date']} {$activity_data_apply['time']}
-                    </div>
-                    <div class="apply-people-number">
-                        <img class="people-number-img line-img"
-                             src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
-                        2 人报名
-                    </div>
-                </div>
-                <div class="list-cell">
-                    <img class="banner" src="{$_W['siteroot']}/addons/event_registration/images/cbd.jpg"/>
-                    <div class="title">{$activity_data_apply['title']}</div>
-                    <div class="date-time">
-                        <img class="date-time-img line-img"
-                             src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
-                        {$activity_data_apply['date']} {$activity_data_apply['time']}
-                    </div>
-                    <div class="apply-people-number">
-                        <img class="people-number-img line-img"
-                             src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
-                        3 人报名
-                    </div>
-                </div>
+                {/loop}
+
             </div>
         </div>
         <div v-if="clickSwitchValue === 1">
             <div class="activity-list">
-                <div class="list-cell">
-                    <img class="banner" src="{$_W['siteroot']}/addons/event_registration/images/cbd.jpg"/>
-                    <div class="title">{$activity_data_join['title']}</div>
-                    <div class="date-time">
-                        <img class="date-time-img line-img"
-                             src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
-                        {$activity_data_join['date']} {$activity_data_join['time']}
+                {loop $activity_data_issue $key $value}
+                <a href="{php echo $this->createMobileUrl('details');}">
+                    <div class="list-cell">
+                        <!--                        <img class="banner" src="{$_W['siteroot']}/addons/event_registration/images/cbd.jpg"/>-->
+                        <img class="banner" src="{$value['url']}"/>
+                        <!--                        <div class="title">{$activity_data_apply['title']}</div>-->
+                        <div class="title">{$value['title']}</div>
+                        <div class="activity-info">
+                            <div class="date-time">
+                                <img class="date-time-img line-img"
+                                     src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
+                                <!-- {$activity_data_apply['date']} {$activity_data_apply['time']}-->
+                                {php echo date('m/d', strtotime($value['date']));} {$value['time']}
+                            </div>
+                            <div class="apply-people-number">
+                                <img class="people-number-img line-img"
+                                     src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
+                                2 人报名
+                            </div>
+                        </div>
                     </div>
-                    <div class="apply-people-number">
-                        <img class="people-number-img line-img"
-                             src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
-                        2 人报名
-                    </div>
-                </div>
+                </a>
+                {/loop}
             </div>
         </div>
     </div>
 
 </div>
 <div class="mui-content">
-    <!--<div id="slider" class="mui-slider">
-        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-            <a class="mui-control-item" href="#item1mobile">
-                待办公文
-            </a>
-            <a class="mui-control-item" href="#item2mobile">
-                已办公文
-            </a>
-            &lt;!&ndash;<a class="mui-control-item" href="#item3mobile">
-                全部公文
-            </a>&ndash;&gt;
-        </div>
-        <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
-        <div class="mui-slider-group">
-            <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
-                <div id="scroll1" class="mui-scroll-wrapper">
-                    <div class="mui-scroll">
-                        <ul class="mui-table-view">
-                            <li class="mui-table-view-cell">
-                                第一个选项卡子项-1
-                            </li>
-                            <li class="mui-table-view-cell">
-                                第一个选项卡子项-2
-                            </li>
-                            <li class="mui-table-view-cell">
-                                第一个选项卡子项-3
-                            </li>
-                            <li class="mui-table-view-cell">
-                                第一个选项卡子项-4
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div id="item2mobile" class="mui-slider-item mui-control-content">
-                <div id="scroll2" class="mui-scroll-wrapper">
-                    <div class="mui-scroll">
-                        <div class="mui-loading">
-                            <div class="mui-spinner">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>-->
 
     <div class="add-btn" onclick="add_btn()">+</div>
 
