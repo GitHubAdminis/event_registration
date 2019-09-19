@@ -10,39 +10,61 @@ defined('IN_IA') or exit('Access Denied');
 class Event_registrationModuleSite extends WeModuleSite {
 
     // 前台方法
-    public function doMobileGuide() {
+    public function doMobileIndex() {
+
         include $this->template('common/header');
 
         global $_W, $_GPC;
+//        $open_id = localStorage . getItem('openid');
+//        if (!$open_id) {
+            $userinfo = mc_oauth_userinfo($_W['uniacid']);
+//            var_dump($userinfo);
 
-        include $this->template('guide');
+            $user = pdo_get('vip_activity_user', array('openid' => $userinfo['openid']));
+//            var_dump($user);
+
+            if (!$user) {
+                $to_user = array(
+                    'openid' => $userinfo['openid'],
+                    'nickname' => $userinfo['nickname'],
+//                'profile_photo' => $userinfo['avatarUrl'],
+//                'profile_photo' => $userinfo['headimgUrl'],
+                    'avatar' => $userinfo['avatar']
+                );
+
+                pdo_insert('vip_activity_user', $to_user);
+                // localStorage . setItem('openid', $userinfo['openid']);
+                // $this->doMobileHomePage();
+            }
+//        } else {
+//            $this->doMobileHomePage();
+//        }
+
+        include $this->template('index');
     }
 
-    public function doMobileIndex() {
+
+    public function doMobileHome_Page() {
         // 这个操作被定义用来呈现 功能封面
         include $this->template('common/header');
 
         global $_W, $_GPC;
-//        $sql = "select activity.title, activity.date, activity.time, banner.url from " .tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.b_id = banner.c_id";
-        $sql_apply = "select activity.title, activity.date, activity.time, banner.url from " .tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.status = 0";
-//        'select activity.title, activity.date, activity.time, banner.url from apply_vip_activity as activity, apply_vip_banner as banner where activity.status = 0';
-//        var_dump($sql_apply);die();
+        $sql_apply = "select activity.title, activity.date, activity.time, cover.img_url from " . tablename('vip_activity') . " as activity ," . tablename('vip_activity_category_cover') . " as cover where 1";
+        'select activity.title, activity.date, activity.time, cover.img_url from vip_activity as activity, vip_activity_category_cover as cover where 1';
+        var_dump($sql_apply);
+        die();
 
-        $activity_data_apply = pdo_fetchall($sql_apply); // 取出结果集数组
+        $activity_apply_data = pdo_fetchall($sql_apply); // 取出结果集数组vip_activity
 //        var_dump($activity_data_apply);die();
 
-        $sql_issue = "select activity.title, activity.date, activity.time, banner.url from " .tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.status = 1";
+        $sql_issue = "select activity.title, activity.date, activity.time, banner.url from " . tablename('apply_vip_activity') . " as activity ," . tablename('apply_vip_banner') . " as banner where activity.status = 1";
 
-        $activity_data_issue = pdo_fetchall($sql_issue); // 取出结果集数组
+        $activity_issue_data = pdo_fetchall($sql_issue); // 取出结果集数组
 //        var_dump($user_list);die();
 
-//        echo "http://we7.think2009.com/app/" . $this->createMobileUrl('index') . '<br/>';
-//        echo "<a href='" . $this->createMobileUrl('index') . "'>MobileUrl</a>";
-//        echo "<a href='" . $this->createWebUrl('details') . "'>WebUrl</a>";
 
         // 创建路由
 //        echo 'MODULE_URL' . MODULE_URL . '<br/>';
-//        var_dump($_GPC) . '<br/><br><br>';
 
 
         $servername = "39.104.26.166";
@@ -57,12 +79,6 @@ class Event_registrationModuleSite extends WeModuleSite {
             die("连接失败: " . $conn->connect_error);
         }
 
-
-        /*        数据库 增删改查
-                $sql = "INSERT INTO apply_vip_user (id, category_name, create_time) VALUES ('11', 'Nginx', 'john@example.com')";
-                $sql = "delete from apply_vip_user where id = 8";
-                $sql = "UPDATE apply_vip_user set category_name = 'MySql Tutorial' where id = 9";
-                $sql = "select * from ims_apply_vip_user";*/
 
         /*        if ($conn->query($sql) == TRUE) {
                     echo "New record inserted successfully";
@@ -80,29 +96,13 @@ class Event_registrationModuleSite extends WeModuleSite {
                  array_push($arr, $rows);
              }
          }*/
-        /*        echo json_encode($arr);
-                echo json_encode($arr['id']);
-                var_dump(json_encode($arr['id']));
 
+//        echo json_encode($arr);
+//        echo json_encode($arr['id']);
+//        var_dump(json_encode($arr['id']));
 
-                $category = array('category_name' => 'php video', 'create_time' => 'fe');
-                $result = pdo_insert("apply_vip_user", $category, $replace = false);
-                var_dump($result);*/
-
-//        $userinfo = mc_oauth_userinfo($_W['uniacid']);
-//        var_dump($userinfo);
 //        $user = pdo_get('apply_vip_user', array('open_id' => $userinfo['open_id']));
 //
-        /*if (!$user) {
-            $to_user = array(
-                'open_id' => $userinfo['openid'],
-                'nickname' => $userinfo['nickname'],
-                'profile_photo' => $userinfo['headimgUrl'],
-                'authorize_time' => time()
-            );
-
-            pdo_insert('apply_vip_user', $to_user);
-        }*/
 
         // query activity data
 //        $activity_data_apply = pdo_get('apply_vip_activity', array('status' => 0));
@@ -113,9 +113,40 @@ class Event_registrationModuleSite extends WeModuleSite {
 
 //        $conn->close();
 
-        include $this->template('index');
+        include $this->template('home_page');
 
 //        include $this->template('common/footer');
+
+    }
+
+
+    public function doMobileCreate_Event() {
+
+        global $_W, $_GPC;
+
+        // include $this->template('common/header');
+        if ($_W['ispost']) {
+            $to_activity = array(
+                'title' => $_GPC['title'],
+                'description' => $_GPC['description'],
+                'date' => $_GPC['date'],
+                'time' => $_GPC['time'],
+                'address' => $_GPC['address']
+            );
+
+            $result = pdo_insert('vip_activity', $to_activity);
+
+        };
+
+
+        // query activity data
+//        $activity_data = pdo_get('vip_activity', array('id' => $_GPC['id']));
+
+        // query user is activity or not
+//        $is_activity = pdo_get('apply_vip_order', array('open_id' => $userinfo['openid'], 'status' => 1));
+
+
+        include $this->template('create_event');
     }
 
 
@@ -125,19 +156,16 @@ class Event_registrationModuleSite extends WeModuleSite {
 
         global $_W, $_GPC;
 
-        $userinfo = mc_oauth_userinfo($_W['uniacid']);
-
         // query activity data
-        $activity_data_details = pdo_get('apply_vip_activity');
-        $activity_data_join = pdo_get('apply_vip_activity', array('status' => 1));
+        $activity_data_details = pdo_get('vip_activity');
+        $activity_data_join = pdo_get('vip_activity');
 
         // query user is activity or not
-        $activity_userInfo = pdo_get('apply_vip_user');
+        $activity_userInfo = pdo_get('vip_activity_user');
 
         include $this->template('details');
         // include $this->template('common/footer');
     }
-
 
 
     public function doMobileGetPay() {
@@ -177,82 +205,24 @@ class Event_registrationModuleSite extends WeModuleSite {
     }
 
 
-    public function doMobileCreate_Event() {
-
-        global $_W, $_GPC;
-
-        // include $this->template('common/header');
-        if ($_W['ispost']) {
-            $to_activity = array(
-                'title' => $_GPC['title'],
-                'description' => $_GPC['description'],
-                'date' => $_GPC['date'],
-                'time' => $_GPC['time'],
-                'address' => $_GPC['address'],
-                'status' => 0,
-                'creation_time' => time()
-            );
-
-            $result = pdo_insert('apply_vip_activity', $to_activity);
-
-        };
-
-        $userinfo = mc_oauth_userinfo($_W['uniacid']);
-        // var_dump($userinfo);
-        $user = pdo_get('apply_vip_user', array('open_id' => $userinfo['openid']));
-
-        if (!$user) {
-            $to_user = array(
-                'open_id' => $userinfo['openid'],
-                'nickname' => $userinfo['nickname'],
-//                'profile_photo' => $userinfo['avatarUrl'],
-//                'profile_photo' => $userinfo['headimgUrl'],
-                'profile_photo' => $userinfo['avatar'],
-                'authorize_time' => time(),
-                'sex' => $userinfo['sex'],
-                'language' => $userinfo['language'],
-                'city' => $userinfo['city'],
-                'province' => $userinfo['province'],
-                'country' => $userinfo['country'],
-                'subscribe_time' => time(),
-                'mobile' => $userinfo['mobile'],
-                'realname' => $userinfo['realname']
-            );
-
-            pdo_insert('apply_vip_user', $to_user);
-        }
-
-        // query activity data
-        $activity_data = pdo_get('apply_vip_activity', array('id' => $_GPC['id']));
-
-        // query user is activity or not
-//        $is_activity = pdo_get('apply_vip_order', array('open_id' => $userinfo['openid'], 'status' => 1));
-
-
-        include $this->template('create_event');
-    }
-
-
     public function doMobileEditor_Event() {
 
         global $_W, $_GPC;
 
-        $activity_data = pdo_get('apply_vip_activity');
+        $activity_data = pdo_get('vip_activity');
 
         // include $this->template('common/header');
         if ($_W['ispost']) {
             $to_activity = array(
-                'id' => 222,
+                'id' => 1,
                 'title' => $_GPC['title'],
                 'description' => $_GPC['description'],
                 'date' => $_GPC['date'],
                 'time' => $_GPC['time'],
-                'address' => $_GPC['address'],
-                'status' => 0,
-                'creation_time' => time()
+                'address' => $_GPC['address']
             );
 
-            $result = pdo_insert('apply_vip_activity', $to_activity, true);
+            $result = pdo_insert('vip_activity', $to_activity, true);
 
         };
 
@@ -334,7 +304,7 @@ class Event_registrationModuleSite extends WeModuleSite {
                 'creation_time' => time()
             ];
 
-            $result = pdo_insert('apply_vip_activity', $up_activity, true);
+//            $result = pdo_insert('apply_vip_activity', $up_activity, true);
 
             if ($result) {
                 message('update successfully!', $this->createWebUrl('index'), 'success');
@@ -424,10 +394,10 @@ class Event_registrationModuleSite extends WeModuleSite {
         $res = $conn->query($sql);
         echo json_encode($res);
         $arr = array();
-        if($res->num_rows > 0){
-            while($rows = $res->fetch_assoc()){
+        if ($res->num_rows > 0) {
+            while ($rows = $res->fetch_assoc()) {
                 $arr[] = $rows;  // [{}, {}, {}]
-                array_push($arr,$rows);
+                array_push($arr, $rows);
             }
         }
 

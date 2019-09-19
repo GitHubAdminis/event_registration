@@ -357,13 +357,13 @@
         let time = $('input[name="time"]').val();
         let address = $('input[name="address"]').val();
 
-        // console.log('title', title);
-        // console.log('description', description);
-        // console.log('date: ', input_date.innerText, 'time: ', input_time.innerText);
-        // console.log('date: ', date, 'time: ', time);
-        // console.log('address: ', address);
+        console.log('title', title);
+        console.log('description', description);
+        console.log('date: ', input_date.innerText, 'time: ', input_time.innerText);
+        console.log('date: ', date, 'time: ', time);
+        console.log('address: ', address);
 
-       /* if (title === '') {
+        if (title === '') {
             mui.toast('请填写活动标题');
             return false;
         } else if (description === '') {
@@ -378,11 +378,11 @@
         } else if (address === '') {
             mui.toast('请填写活动地址');
             return false;
-        } else {*/
+        } else {
             return true;
             // window.location.href = "{php echo $this->createMobileUrl('index');}";
             // window.history.back(-1);
-        // }
+        }
 
         // window.location.href = "{php echo $this->createMobileUrl('index');}";
         // window.history.back(-1);
@@ -391,7 +391,7 @@
 
     function submit_btn() {
         console.log('#submit_btn');
-        window.location.href = "{php echo $this->createMobileUrl('index');}"
+        window.location.href = "{php echo $this->createMobileUrl('home_page');}"
     }
 
 

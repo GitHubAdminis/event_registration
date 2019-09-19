@@ -63,14 +63,17 @@
             border-bottom: 1px solid rgb(246, 246, 246);
             margin-top: 10px;
             line-height: 55px;
+            margin-bottom: 0;
+            font-size: 12px;
         }
 
         .textarea {
             border: none;
-            height: 200px;
+            height: 120px;
             width: 100%;
-            font-size: 17px;
+            font-size: 12px;
             box-sizing: border-box;
+            margin-bottom: 0;
         }
 
         .btn-date {
@@ -83,6 +86,7 @@
             border-bottom: 1px solid rgb(246, 246, 246);
             position: relative;
             align-items: center;
+            background-color: white;
         }
 
         .btn-time {
@@ -95,6 +99,7 @@
             /*border-bottom: 1px solid rgb(246, 246, 246);*/
             position: relative;
             align-items: center;
+            background-color: white;
         }
 
         .btn-location {
@@ -107,28 +112,32 @@
             border-bottom: 1px solid rgb(246, 246, 246);
             position: relative;
             align-items: center;
+            background-color: white;
         }
 
         .btn-date #input_date {
             position: absolute;
-            right: 25px;
-            width: 90px;
+            right: 30px;
+            width: 75px;
             color: #777;
             border: none;
+            font-size: 12px;
         }
 
         .btn-time #input_time {
             position: absolute;
-            right: 25px;
-            width: 90px;
+            right: 30px;
+            width: 75px;
             color: #777;
             border: none;
+            font-size: 12px;
         }
 
         .btn-location .select-location {
             border: none;
             padding-left: 10px;
             width: 90%;
+            font-size: 12px;
         }
 
         .arrow-right {
@@ -143,26 +152,41 @@
             top: 17px;
         }
 
+        .h3-title {
+            text-align: center;
+            padding-top: 20px;
+            background-color: white;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
         .date-word {
             margin-left: 10px;
+            font-size: 12px;
         }
 
         .time-word {
             margin-left: 10px;
+            font-size: 12px;
         }
 
         .icon-img {
-            width: 30px;
-            height: 30px;
+            width: 20px;
+            height: 20px;
         }
 
         #submit_btn {
-            width: 95%;
+            width: 90%;
             margin: 30px auto;
             display: flex;
             text-align: center;
             justify-content: center;
-            height: 45px;
+            height: 42px;
+            color: #fff;
+            border: none;
+            background-color: #fb7457;
+            border-radius: 20px;
+            font-size: 18px;
         }
 
         /*amap */
@@ -170,6 +194,60 @@
             width: 100%;
             height: 200px;
         }
+
+        .cover {
+            position: relative;
+            padding-top: 10px;
+            background-color: white;
+            padding-bottom: 10px;
+        }
+
+        .cover .cover-img {
+            width: 100%;
+            height: 160px;
+        }
+
+        .cover .cover-img .img {
+            height: 160px;
+            width: 100%;
+        }
+
+        .cover .change-cover {
+
+        }
+
+        .cover .change-cover .change-cover-btn {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.78);
+            font-size: 10px;
+            padding: 5px;
+            border-radius: 26px;
+            width: 62px;
+            line-height: 10px;
+            height: 20px;
+        }
+
+        .title-input {
+            width: 100%;
+            height: 50px;
+            padding-left: 15px;
+            box-sizing: border-box;
+            border: none;
+            border-top: 1px solid rgb(246, 246, 246);
+            border-bottom: 1px solid rgb(246, 246, 246);
+            margin-top: 0;
+            line-height: 55px;
+            margin-bottom: 0;
+            border-top: 0;
+        }
+
+        .split-line {
+            width: 100%;
+            height: 15px;
+        }
+
     </style>
 
 </head>
@@ -181,11 +259,19 @@
 </header>-->
 <div class="mui-content">
     <div class="content-padded">
-        <form id="form" method="post" onsubmit="return onSubmit()">
+        <form id="form" method="post">
             <!--        <h2>{$activity_data['title']}</h2>-->
-            <h3>创建活动</h3>
-            <input class="title-input" name="title" value="" placeholder="活动标题" id="event_title" type="text"
-                   style="width: 100%;height: 50px;padding-left: 15px;box-sizing: border-box;border: none;border-top: 1px solid rgb(246, 246, 246);border-bottom: 1px solid rgb(246, 246, 246);margin-top: 10px;line-height: 55px;margin-bottom: 0;"/>
+            <h3 class="h3-title" style="margin: 0;border-top: 0;border-left: 0;border-right: 0;">创建活动</h3>
+            <div class="cover">
+                <div class="cover-img">
+                    <img class="img" src="{$_W['siteroot']}/addons/event_registration/images/outdoor01.png" alt=""/>
+                </div>
+                <div class="change-cover">
+                    <button class="change-cover-btn">更换封面</button>
+                </div>
+            </div>
+            <input class="title-input" style="border-color: white;border-bottom-color: rgb(246, 246, 246);" name="title"
+                   value="" placeholder="活动标题" id="event_title" type="text"/>
             <textarea class="textarea" name="description" placeholder="活动描述"></textarea>
             <!--<p>
                 {php $main_body = html_entity_decode($activity_data[content]);}
@@ -194,26 +280,26 @@
             <!--        <p style="margin-top: 2%; text-align: center; font-size: 1.5em">apply fee: {$activity_data['price']}元</p>-->
 
             <!--        <div style="{if empty($is_activity)}{else}display:none{/if}">-->
-
+            <div class="split-line"></div>
             <div data-options='{"type":"date"}' class="btn btn-date btn-block">
                 <img class="icon-img img-date" src="{$_W['siteroot']}/addons/event_registration/images/calender.png"/>
                 <div class="date-word">活动日期</div>
                 <!--                <div id="input_date" name="date">选择日期</div>-->
-                <input id="input_date" value="" name="date" placeholder="选择日期"/>
+                <input id="input_date" value="" name="date" placeholder="选择活动日期"/>
                 <div class="arrow-right"></div>
             </div>
             <div data-options='{"type":"time"}' class="btn btn-time btn-block">
                 <img class="icon-img img-time" src="{$_W['siteroot']}/addons/event_registration/images/time.png"/>
                 <div class="time-word">活动时间</div>
-                <!--                <div id="input_time" name="time">选择时间</div>-->
-                <input id="input_time" value="" name="time" placeholder="选择时间"/>
+                <!--  <div id="input_time" name="time">选择时间</div>-->
+                <input id="input_time" value="" name="time" placeholder="选择活动时间"/>
                 <div class="arrow-right"></div>
             </div>
             <div class="btn-location">
                 <img class="icon-img img-time" src="{$_W['siteroot']}/addons/event_registration/images/location.png"/>
                 <input class="select-location" name="address" placeholder="活动地址"/>
             </div>
-            <input type="submit" id="submit_btn" value="确认创建"/>
+            <input type="submit" id="submit_btn" onclick="submit_btn()" value="确认创建"/>
         </form>
     </div>
 
@@ -234,31 +320,31 @@
 
 <script>
 
-    let input_date = $('#input_date')[0];
-    let input_time = $('#input_time')[0];
+    let input_date = $("#input_date")[0]
+    let input_time = $("#input_time")[0];
     (function ($) {
-        $.init();
-        var result = $('#result')[0];
-        var btn_date = $('.btn-date');
+        $.init()
+        var result = $("#result")[0]
+        var btn_date = $(".btn-date")
         btn_date.each(function (i, btn) {
-            btn.addEventListener('tap', function () {
-                var _self = this;
+            btn.addEventListener("tap", function () {
+                var _self = this
                 if (_self.picker) {
                     _self.picker.show(function (rs) {
-                        result.innerText = '选择结果: ' + rs.text;
-                        _self.picker.dispose();
-                        _self.picker = null;
-                    });
+                        result.innerText = "选择结果: " + rs.text
+                        _self.picker.dispose()
+                        _self.picker = null
+                    })
                 } else {
-                    var optionsJson = this.getAttribute('data-options') || '{}';
-                    var options = JSON.parse(optionsJson);
-                    var id = this.getAttribute('id');
+                    var optionsJson = this.getAttribute("data-options") || "{}"
+                    var options = JSON.parse(optionsJson)
+                    var id = this.getAttribute("id")
                     /*
                      * 首次显示时实例化组件
                      * 示例为了简洁，将 options 放在了按钮的 dom 上
                      * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
                      */
-                    _self.picker = new $.DtPicker(options);
+                    _self.picker = new $.DtPicker(options)
                     _self.picker.show(function (rs) {
                         /*
                          * rs.value 拼合后的 value
@@ -272,8 +358,8 @@
                         // var result = $('#demo4')[0];
                         // result.innerText = '选择结果: ' + rs.text;
 
-                        input_date.value = rs.text;
-                        console.log('date: ', rs.text);
+                        input_date.value = rs.text
+                        console.log("date: ", rs.text)
                         /*
                          * 返回 false 可以阻止选择框的关闭
                          * return false;
@@ -284,34 +370,34 @@
                          * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
                          * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
                          */
-                        _self.picker.dispose();
-                        _self.picker = null;
-                    });
+                        _self.picker.dispose()
+                        _self.picker = null
+                    })
                 }
 
-            }, false);
-        });
+            }, false)
+        })
 
-        var btn_time = $('.btn-time');
+        var btn_time = $(".btn-time")
         btn_time.each(function (i, btn) {
-            btn.addEventListener('tap', function () {
-                var _self = this;
+            btn.addEventListener("tap", function () {
+                var _self = this
                 if (_self.picker) {
                     _self.picker.show(function (rs) {
-                        result.innerText = '选择结果: ' + rs.text;
-                        _self.picker.dispose();
-                        _self.picker = null;
-                    });
+                        result.innerText = "选择结果: " + rs.text
+                        _self.picker.dispose()
+                        _self.picker = null
+                    })
                 } else {
-                    var optionsJson = this.getAttribute('data-options') || '{}';
-                    var options = JSON.parse(optionsJson);
-                    var id = this.getAttribute('id');
+                    var optionsJson = this.getAttribute("data-options") || "{}"
+                    var options = JSON.parse(optionsJson)
+                    var id = this.getAttribute("id")
                     /*
                      * 首次显示时实例化组件
                      * 示例为了简洁，将 options 放在了按钮的 dom 上
                      * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
                      */
-                    _self.picker = new $.DtPicker(options);
+                    _self.picker = new $.DtPicker(options)
                     _self.picker.show(function (rs) {
                         /*
                          * rs.value 拼合后的 value
@@ -325,8 +411,8 @@
                         // var result = $('#demo5')[0];
                         // result.innerText = '选择结果: ' + rs.text;
 
-                        input_time.value = rs.text;
-                        console.log('time: ', rs.text);
+                        input_time.value = rs.text
+                        console.log("time: ", rs.text)
                         /*
                          * 返回 false 可以阻止选择框的关闭
                          * return false;
@@ -337,25 +423,25 @@
                          * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
                          * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
                          */
-                        _self.picker.dispose();
-                        _self.picker = null;
-                    });
+                        _self.picker.dispose()
+                        _self.picker = null
+                    })
                 }
 
-            }, false);
-        });
+            }, false)
+        })
 
-    })(mui);
+    })(mui)
 
 
-    function onSubmit() {
+    function submit_btn() {
         // console.log('onSubmit');
 
-        let title = $('input[name="title"]').val();
-        let description = $('textarea[name="description"]').val();
-        let date = $('input[name="date"]').val();
-        let time = $('input[name="time"]').val();
-        let address = $('input[name="address"]').val();
+        let title = $("input[name=\"title\"]").val()
+        let description = $("textarea[name=\"description\"]").val()
+        let date = $("input[name=\"date\"]").val()
+        let time = $("input[name=\"time\"]").val()
+        let address = $("input[name=\"address\"]").val()
 
         // console.log('title', title);
         // console.log('description', description);
@@ -363,37 +449,32 @@
         // console.log('date: ', date, 'time: ', time);
         // console.log('address: ', address);
 
-        if (title === '') {
-            mui.toast('请填写活动标题');
-            return false;
-        } else if (description === '') {
-            mui.toast('请填写活动描述');
-            return false;
-        } else if (date === '') {
-            mui.toast('请选择活动日期');
-            return false;
-        } else if (time === '') {
-            mui.toast('请选择活动时间');
-            return false;
-        } else if (address === '') {
-            mui.toast('请填写活动地址');
-            return false;
+        if (title === "") {
+            mui.toast("请填写活动标题")
+            return false
+        } else if (description === "") {
+            mui.toast("请填写活动描述")
+            return false
+        } else if (date === "") {
+            mui.toast("请选择活动日期")
+            return false
+        } else if (time === "") {
+            mui.toast("请选择活动时间")
+            return false
+        } else if (address === "") {
+            mui.toast("请填写活动地址")
+            return false
         } else {
-            return true;
+            // return true;
+            window.location.href = "{php echo $this->createMobileUrl('home_page');}"
+            window.submit()
+            console.log("#submit_btn")
+
             // window.location.href = "{php echo $this->createMobileUrl('index');}";
             // window.history.back(-1);
         }
 
-        // window.location.href = "{php echo $this->createMobileUrl('index');}";
-        // window.history.back(-1);
     }
-
-
-    function submit_btn() {
-        console.log('#submit_btn');
-        window.location.href = "{php echo $this->createMobileUrl('index');}"
-    }
-
 
 </script>
 
