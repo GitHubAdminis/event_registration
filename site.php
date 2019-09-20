@@ -150,6 +150,22 @@ class Event_registrationModuleSite extends WeModuleSite {
     }
 
 
+    public function doMobileSelect_Cover() {
+
+        global $_W, $_GPC;
+
+        $sql = " select category.id, category.name, cover.cid, cover.img_url from " . tablename('vip_activity_category') . ' as category, ' . tablename('vip_activity_category_cover') . ' as cover where category.id = cover.cid';
+//        'select category.id, category.name, cover.cid, cover.img_url from vip_activity_category as category, vip_activity_category_cover as cover where category.id = cover.cid';
+//        $cover_data = pdo_get('vip_activity_category_cover');
+//        var_dump($sql); die();
+
+        $cover_data = pdo_fetchall($sql);
+//        var_dump($cover_data); die();
+
+        include $this->template('select_cover');
+    }
+
+
     public function doMobileDetails() {
         // 这个操作被定义用来呈现 功能封面
         include $this->template('common/header');

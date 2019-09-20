@@ -5,6 +5,24 @@
     <title>Title</title>
 </head>
 <body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">选择封面</h1>
+</header>
+<div class="container">
+    <div class="content">
 
+        {loop $cover_data $key $value}
+        <div class="category">
+            <div class="title">{$value['name']}</div>
+            <div class="cover">
+                <img src="{$value['img_url']}" alt=""/>
+                <!-- <img src="../../images/banner/outdoor02.png" alt="" />-->
+            </div>
+        </div>
+        {/loop}
+
+    </div>
+</div>
 </body>
 </html>
