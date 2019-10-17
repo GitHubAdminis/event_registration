@@ -1,0 +1,127 @@
+{template 'common/header'}
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
+
+    .form-group-block {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .form-group-block .form-select-group {
+        width: 380px;
+        display: flex;
+        flex-flow: row;
+    }
+
+    .form-group-block .form-select-group .btn-query {
+        margin-left: 25px;
+    }
+
+    .modal-dialog {
+        position: absolute;
+        top: 20%;
+        margin-left: -360px;
+    }
+
+    .modal-dialog .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .modal-dialog .modal-footer .btn {
+        min-width: 50px;
+    }
+
+    .modal-dialog .modal-footer .btn + .btn {
+        margin-left: 15px;
+    }
+
+    .modal-dialog .modal-body {
+        padding: 30px;
+        border-top: 1px solid #e5e5e5;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .uploader-modal.modal {
+        z-index: 1051;
+    }
+
+    .btn-option {
+        width: 70px;
+        outline: none;
+        color: white;
+        outline: none;
+    }
+
+    .btn-editor {
+        background: #27c958;
+    }
+
+    .btn-delete {
+        background: red;
+    }
+
+</style>
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <table class="table table-striped">
+            <input class="add_btn" style="background: transparent;background-color: rgb(39, 201, 88);
+                color: white;padding: 5px 10px;border: none;border-radius: 5px;margin-bottom: 15px" type="button"
+                   onclick="nav_to_new_editor_cover()" value=" + 添加封面"/>
+            <thead>
+            <tr>
+                <th>封面ID</th>
+                <th>封面分类</th>
+                <th>封面图片</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $order_list $key $value}
+            <tr>
+                <td>{$value['oid']}</td>
+                <td>{$value['name']}</td>
+                <td><img style="width: 180px;height: 120px;" src="{$value['img_url']}" alt="封面图"/></td>
+                <td>{$value['create_time']}</td>
+                <!-- <td><input class="btn-option btn-editor" style="border: none;padding: 5px;" type="button" onclick="editor_cover('{$value[oid]}')" value="编辑"/></td>-->
+                <td>
+                    <a href="{php echo $this->createWebUrl('editor_new_cover', ['oid'=>$value[oid]])}">
+                        <input class="btn-option btn-editor" style="border: none;padding: 5px;" type="button" value="编辑"/>
+                    </a>
+                </td>
+                <td>
+                    <a href="{php echo $this->createWebUrl('delete_Cover', ['oid'=>$value[oid]])}" onclick="return confirm('是否删除?')">
+                        <input class="btn-option btn-delete" style="border: none;padding: 5px;" type="button" value="删除"/>
+                    </a>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+</div>
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        // console.log("{php echo $oid}")
+    });
+
+    function nav_to_new_editor_cover() {
+        window.location.href = "{php echo $this->createWebUrl('editor_new_cover');}"
+    }
+
+</script>
+
+{template 'common/footer'}

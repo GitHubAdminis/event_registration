@@ -1,0 +1,32 @@
+{template 'common/header'}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            activity list
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" method="post">
+             <label for="name">选择封面分类</label>
+                <select class="form-control">
+                    <option>户外</option>
+                    <option>聚会</option>
+                    <option>运动</option>
+                </select>
+                <label class="control-label">activity icon</label>
+                <div class="form-group">
+                    <div class="upload-image-view">
+                        {php echo tpl_form_field_image('custom_share_icon');}
+                    </div>
+                </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{template 'common/footer'}

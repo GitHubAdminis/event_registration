@@ -2,25 +2,19 @@
 <manifest xmlns="http://www.w7.cc" versionCode="">
 	
 	<application setting='false'>
-		<name><![CDATA[活动报名_小活动]]></name>
+		<name><![CDATA[活动助手]]></name>
 
-		<identifie><![CDATA[event_registration]]></identifie>
+		<identifie><![CDATA[apply_event]]></identifie>
 
-		<version><![CDATA[1.0.2]]></version>
+		<version><![CDATA[1.0.1]]></version>
 
-		<ability><![CDATA[]]></ability>
+		<ability><![CDATA[xxx]]></ability>
 
-		<type><![CDATA[]]></type>
+		<type><![CDATA[biz]]></type>
 
-		<description><![CDATA[这年头，凑齐全班同学一起吃顿饭，也是一件挺不容易的事情。
+		<description><![CDATA[在群里提出老同学聚会的请求，却没有多少人回应，尴尬。
 
-在群里提出老同学聚会的请求，却没有多少人回应，尴尬。
-
-难道非得一个个找他们问才行吗？
-
-那得多麻烦呀！
-
-不如试试“小活动”这个约局小程序吧。
+不如试试“活动助手”这个公众号吧。
 
 组织者只需在这个小程序中创建一个活动，然后把它甩到群里，让他们自己点击报名就行。]]></description>
 
@@ -28,12 +22,64 @@
 
 		<url><![CDATA[]]></url>
 
-		<setting><![CDATA[]]></setting>
+		<setting><![CDATA[1]]></setting>
 
 	</application>
 
 	
 	<platform>
+		<subscribes>
+			<message type="text" />
+
+			<message type="voice" />
+
+			<message type="shortvideo" />
+
+			<message type="location" />
+
+			<message type="link" />
+
+			<message type="trace" />
+
+			<message type="click" />
+
+			<message type="merchant_order" />
+
+			<message type="user_del_card" />
+
+			<message type="user_consume_card" />
+
+			<message type="user_get_card" />
+
+			<message type="subscribe" />
+
+			<message type="qr" />
+
+			<message type="video" />
+
+			<message type="image" />
+
+		</subscribes>
+
+		<handles>
+
+			<message type="text" />
+			<message type="image" />
+			<message type="voice" />
+			<message type="video" />
+			<message type="shortvideo" />
+			<message type="location" />
+			<message type="subscribe" />
+			<message type="link" />
+			<message type="qr" />
+			<message type="trace" />
+			<message type="click" />
+			<message type="merchant_order" />
+			<message type="user_get_card" />
+			<message type="user_del_card" />
+			<message type="user_consume_card" />
+		</handles>
+
 		<rule embed="false" />
 
 		<rule embed="false" />
@@ -53,14 +99,78 @@
 		</cover>
 
 		<menu>
-			<entry title="首页" do="index" state="index" direct="" />
-			<entry title="小活动" do="list" state="list" direct="" />
-			<entry title="活动详情" do="details" state="details" direct="" />
+			<entry title="活动小助手" do="index" state="index" direct="" />
+			<entry title="轮播图管理" do="banner" state="banner" direct="" />
+			<entry title="用户管理" do="user" state="user" direct="" />
 		</menu>
 
 	</bindings>
 
-	<install><![CDATA[]]></install>
-	<uninstall><![CDATA[]]></uninstall>
+	<install><![CDATA[DROP TABLE IF EXISTS `ims_vip_activity`;
+CREATE TABLE IF NOT EXISTS `ims_vip_activity` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'activity id 活动表id',
+  `img_id` int(10) DEFAULT NULL COMMENT 'cover img id 分类封面表id',
+  `openid` varchar(255) DEFAULT NULL COMMENT 'openid openid',
+  `title` varchar(255) NOT NULL COMMENT 'activity title 活动标题',
+  `description` varchar(255) DEFAULT NULL COMMENT 'activity description 活动描述',
+  `date` varchar(255) DEFAULT NULL COMMENT 'date 活动日期',
+  `time` varchar(255) DEFAULT NULL COMMENT 'time 活动时间',
+  `address` varchar(255) DEFAULT NULL COMMENT 'address 活动地址',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time 活动创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time 修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=327 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ims_vip_activity_apply`;
+CREATE TABLE IF NOT EXISTS `ims_vip_activity_apply` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'activity apply id 活动报名表id',
+  `aid` int(10) DEFAULT NULL COMMENT 'activity id 活动表id',
+  `openid` varchar(255) DEFAULT NULL COMMENT 'openid openid',
+  `apply_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'apply time 报名时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `ims_vip_activity_category`;
+CREATE TABLE IF NOT EXISTS `ims_vip_activity_category` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'activity category id 活动分类id',
+  `name` varchar(255) DEFAULT NULL COMMENT 'category name 分类名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+INSERT INTO `ims_vip_activity_category` (`id`, `name`) VALUES
+	(1, '户外'),
+	(2, '聚会'),
+	(3, '运动');
+
+DROP TABLE IF EXISTS `ims_vip_activity_category_cover`;
+CREATE TABLE IF NOT EXISTS `ims_vip_activity_category_cover` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'category cover id 活动分类封面表id',
+  `cid` int(10) DEFAULT NULL COMMENT 'category id 活动分类表id',
+  `img_url` varchar(255) DEFAULT NULL COMMENT 'category img url 分类封面图地址',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time 封面创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+<!--INSERT INTO `ims_vip_activity_category_cover` (`id`, `cid`, `img_url`) VALUES-->
+<!--	(1, 1, 'http://we7.think2009.com/addons/event_registration/images/banner/outdoor01.png'),-->
+<!--	(2, 1, 'http://we7.think2009.com/addons/event_registration/images/banner/outdoor02.png'),-->
+<!--	(3, 2, 'http://we7.think2009.com/addons/event_registration/images/banner/meet01.png'),-->
+<!--	(4, 2, 'http://we7.think2009.com/addons/event_registration/images/banner/meet02.png'),-->
+<!--	(5, 3, 'http://we7.think2009.com/addons/event_registration/images/banner/sports01.png'),-->
+<!--	(6, 3, 'http://we7.think2009.com/addons/event_registration/images/banner/sports02.png'),-->
+<!--	(7, 1, 'http://we7.think2009.com/addons/event_registration/images/banner/sports01.png');-->
+
+DROP TABLE IF EXISTS `ims_vip_activity_user`;
+CREATE TABLE IF NOT EXISTS `ims_vip_activity_user` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'user id 用户ID',
+  `openid` varchar(255) NOT NULL COMMENT 'openid openid',
+  `nickname` varchar(255) DEFAULT NULL COMMENT 'user nickname 用户昵称',
+  `avatar` varchar(255) DEFAULT NULL COMMENT 'user avatar 用户头像',
+  `authorize_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'authorize time 用户授权时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_vip_activity`;
+	DROP TABLE IF EXISTS `ims_vip_activity_apply`;
+	DROP TABLE IF EXISTS `ims_vip_activity_category`;
+	DROP TABLE IF EXISTS `ims_vip_activity_category_cover`;
+	DROP TABLE IF EXISTS `ims_vip_activity_user`;]]></uninstall>
 	<upgrade><![CDATA[]]></upgrade>
 </manifest>

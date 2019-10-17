@@ -1,28 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>选择封面</title>
+    <style>
+        .container {
+
+        }
+
+        .content {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            position: relative;
+            font-size: 22px;
+            padding-left: 10px;
+        }
+
+        .title:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 5px;
+            height: 18px;
+            border-radius: 20px;
+            background-color: #fb7457;
+        }
+
+        .category {
+            margin-top: 20px;
+        }
+
+        .category .cover {
+            display: flex;
+            width: 100%;
+            flex-wrap: nowrap;
+            overflow: scroll;
+            padding: 10px 0;
+        }
+
+        .category .cover .img {
+            width: 180px;
+            height: 128px;
+            margin-right: 15px;
+        }
+
+    </style>
+
 </head>
+
 <body>
-<header class="mui-bar mui-bar-nav">
-    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">选择封面</h1>
-</header>
+
 <div class="container">
+
     <div class="content">
 
-        {loop $cover_data $key $value}
+        {loop $map $key $value}
         <div class="category">
-            <div class="title">{$value['name']}</div>
+            <div class="title">{$value[0]['name']}</div>
             <div class="cover">
-                <img src="{$value['img_url']}" alt=""/>
-                <!-- <img src="../../images/banner/outdoor02.png" alt="" />-->
+            {loop $value $key $values}
+
+                <div style="width: 180px;margin-right: 10px;">
+                    <img class="img" id="{$values['img_id']}" onclick="select_cover(this.id)" src="{$values['img_url']}"
+                         alt=""/>
+                </div>
+
+            {/loop}
             </div>
+
         </div>
         {/loop}
 
     </div>
+
 </div>
+
 </body>
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
+    function select_cover(e) {
+      console.log(e);
+      // $.post("{php echo $this->createMobileUrl('create_Activity');}",
+      // {
+      // img_id: e
+      // },
+      // function (data, status) {
+      window.location.href = "{php echo $this->createMobileUrl('create_event_editor');}" + "&img_id=" + e + "&aid=" + '{php echo $data_aid;}';
+      // alert("数据: \n" + data + "\n状态: " + status);
+      // });
+    }
+</script>
+
 </html>

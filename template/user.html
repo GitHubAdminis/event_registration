@@ -1,37 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>index</title>
-</head>
-<body>
 {template 'common/header'}
-<h2>this is User page!</h2>
+<style>
+	.table > tbody > tr > td {
+        vertical-align: middle;
+    }
+</style>
+
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            user list
-        </h3>
-    </div>
     <div class="panel-body">
         <table class="table table-striped">
-            <caption>悬停表格布局</caption>
             <thead>
             <tr>
                 <th>id</th>
-                <th>open_id</th>
-                <th>nickname</th>
-                <th>profile_photo</th>
-                <th>authorize_time</th>
+                <th>昵称</th>
+                <th>头像</th>
+                <th>授权时间</th>
             </tr>
             </thead>
             <tbody>
             {loop $user_list $key $value}
             <tr>
                 <td>{$value['id']}</td>
-                <td>{$value['open_id']}</td>
                 <td>{$value['nickname']}</td>
-                <td><img style="width: 35px;height: 35px;" src="{php echo substr($value['profile_photo'], 0, strlen($value['profile_photo']) - 3 );}" /></td>
+                <td><img style="width: 70px;height: 70px;" src="{$value['avatar']}"/></td>
+                <!-- <td><img style="width: 35px;height: 35px;" src="{php echo substr($value['profile_photo'], 0, strlen($value['profile_photo']) - 3 );}" /></td>-->
                 <td>{$value['authorize_time']}</td>
             </tr>
             {/loop}
@@ -40,6 +31,5 @@
         {$pager}
     </div>
 </div>
+
 {template 'common/footer'}
-</body>
-</html>

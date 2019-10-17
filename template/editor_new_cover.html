@@ -1,0 +1,118 @@
+{template 'common/header'}
+<style>
+    .form-group .button-view .btn-sub {
+        border-color: #e8e9eb;
+        background: white;
+        margin-left: 15px;
+        margin-top: 15px;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {if $oid}编辑封面{else}新建封面{/if}
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" id="form" name="create_event_form">
+            <label>选择封面分类</label>
+            <select class="form-control" name="category_name" id="category_name">
+                {if $oid}
+
+                {loop $category_sql_query_result $key $value}
+                <option  value="{$category_sql_editor_result[0]['cid']}">{$value['name']}</option>
+                {/loop}
+
+                {else}
+
+                {loop $category_sql_query_result $key $value}
+                <option value="{$value['cid']}">{$value['name']}</option>
+                {/loop}
+
+                {/if}
+            </select>
+            <label class="control-label">选择图片路径</label>
+            <div class="form-group-">
+                <div class="upload-image-view">
+                    {php echo tpl_form_field_image('img_url');}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="button-view">
+                    <button onclick="btn_submit()" type="button" class="btn btn-sub">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+
+    window.onload = function () {
+        let cid_str_to_int = "{php echo $cid_str_to_int;}";
+        if ("{php echo $oid;}") {
+            $("input[name='img_url']").val("{$category_sql_editor_result[0]['img_url']}");
+            $(".img-thumbnail").attr("src", "{$category_sql_editor_result[0]['img_url']}");
+            document.getElementById("category_name").selectedIndex = cid_str_to_int - 1;
+        } else {
+            // document.getElementById("category_name").selectedIndex = cid_str_to_int + 1;
+        }
+
+    };
+
+    function btn_submit() {
+        let obj = document.getElementById("category_name");
+        let cid = obj.selectedIndex + 1;
+        let input_img_url = $("input[name='img_url']").val();
+        let img_url = "{php echo $_W['attachurl']}" + $("input[name='img_url']").val();
+        // 判断前缀出现的次数
+        // let attachurl_str_times = 'http://we7.think2009.com/attachment/';
+        let attachurl_str_times = "{php echo $_W['attachurl']}";
+        let str_times_length = img_url.split(attachurl_str_times).length -1;
+        console.log('str_times_length: ',attachurl_str_times, str_times_length);
+        if (str_times_length > 1) {
+            img_url = $("input[name='img_url']").val();
+        }
+        let data = {
+            cid:'{php echo $oid}',
+            obj:cid,
+            img_url:img_url
+        }
+        // 图片路径非空允许提交
+        if (input_img_url === '') {
+            alert('请选择封面！');
+        } else {
+            // 编辑封面
+            if ("{php echo $oid;}") {
+                $.post("{php echo $this->createWebUrl('edt_Cover');}",
+                    data,
+                    function (data, status) {
+                        console.log(">>>",data)
+                        alert("编辑成功")
+                        window.location.href = "{php echo $this->createWebUrl('banner');}"
+                    });
+
+            } else {
+
+                // 新建封面
+                $.post("{php echo $this->createWebUrl('new_Cover');}",
+                    {
+                        cid: cid,
+                        img_url: img_url
+                    },
+                    function (data, status) {
+                        console.log("new result: ", data, status);
+                        console.log('img_url: ', img_url);
+                        alert("新建封面成功");
+                        window.location.href = "{php echo $this->createWebUrl('banner');}"
+                    });
+            }
+
+        }
+
+    }
+</script>
+
+{template 'common/footer'}

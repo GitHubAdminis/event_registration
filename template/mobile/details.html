@@ -1,30 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>活动详情</title>
     <!--标准mui.css-->
     <link rel="stylesheet" href="{$_W['siteroot']}/addons/event_registration/css/mui.min.css">
     <style>
-        .mui-bar-nav {
-            background-color: white;
-            box-shadow: none;
-            border-bottom: none;
-        }
 
-        .mui-bar-nav .share {
-            display: inline-block;
-            position: absolute;
-            right: 10px;
-        }
-
-        .mui-bar-nav .share .share-img {
-            width: 35px;
-            margin: 3px;
-        }
-
-        .mui-bar-nav.mui-bar .mui-icon {
-            color: #000;
+        body {
+            margin: 0;
         }
 
         .container {
@@ -39,7 +26,7 @@
             color: #000000;
             background-color: rgba(199, 193, 63, 0.6);
             position: fixed;
-            top: 44px;
+            top: 0;
             z-index: 1;
         }
 
@@ -59,7 +46,7 @@
         .container .head .info-detail {
             position: absolute;
             left: 20px;
-            bottom: 26px;
+            bottom: 20px;
             display: flex;
         }
 
@@ -97,11 +84,13 @@
             width: 100%;
             background-color: #f1f1f1;
         }
+
         .line-2 {
-            height: 25px;
+            height: 20px;
             width: 100%;
             background-color: #f1f1f1;
         }
+
         .date-time-address {
             background: white;
         }
@@ -139,7 +128,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
-            font-size: 20px;
+            font-size: 17px;
         }
 
         .apply-people-number .head .flex-cell {
@@ -156,6 +145,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px 20px;
+            font-size: 15px;
+            height: 55px;
         }
 
         .apply-people-number .content .con-cell .flex-con-cell {
@@ -164,8 +155,8 @@
         }
 
         .apply-people-number .content .con-cell .flex-con-cell .avatar-img {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             margin-right: 10px;
         }
 
@@ -186,11 +177,21 @@
 
         .footer .view-btn .button {
             width: 100px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer .button {
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
         }
 
         .footer .apply {
 
         }
+
         .footer .editor {
 
         }
@@ -199,108 +200,308 @@
 
         }
 
-
     </style>
+
 </head>
+
 <body>
-<header class="mui-bar mui-bar-nav">
-    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">活动详情</h1>
-    <div class="share" onclick="share()">
-        <img class="share-img" src="{$_W['siteroot']}/addons/event_registration/images/share.png" alt=""/>
-    </div>
-</header>
+
 <div class="container">
     <div class="share-tips">
         点击右上角分享给好友, 微信群
     </div>
     <div class="head">
         <div class="banner">
-            <img class="banner-img"
-                 src="{$_W['siteroot']}/addons/event_registration/images/banner/gettyimages-803690594-612x612.jpg"
-                 alt=""/>
+            <img class="banner-img" src="{$sources_details[0]['img_url']}" alt=""/>
         </div>
         <div class="info-detail">
-            <div class="info-block"><img class="avatar-img" src="{$activity_userInfo['profile_photo']}" alt=""/></div>
+            <div class="info-block"><img class="avatar-img" src="{$sources_details[0]['avatar']}" alt=""/></div>
             <div class="info-block">
-                <div>{$activity_userInfo['nickname']}发布</div>
-                <div>3人发布</div>
+                <div>{$sources_details[0]['nickname']}发布</div>
+                <div>{$apply_no_people}人报名</div>
             </div>
         </div>
     </div>
     <div class="detail-content">
-        <div class="title"> {$activity_data_details['title']}</div>
-        <div class="description"> {$activity_data_details['description']}</div>
+        <div class="title">{$sources_details[0]['title']}</div>
+        <div class="description">{$sources_details[0]['description']}</div>
     </div>
     <div class="line"></div>
     <div class="date-time-address">
         <div class="date-time">
             <img class="icon-img" src="{$_W['siteroot']}/addons/event_registration/images/time.png" alt=""/>
-            {php echo date('Y/m/d', strtotime($activity_data_details['date']));} {$activity_data_details['time']}
+            {php echo date('m/d', strtotime($sources_details[0]['date']));} {$sources_details[0]['time']}
         </div>
         <div class="address">
             <img class="icon-img" src="{$_W['siteroot']}/addons/event_registration/images/location.png" alt=""/>
-            {$activity_data_details['address']}
+            {$sources_details[0]['address']}
         </div>
     </div>
     <div class="line-2"></div>
     <div class="apply-people-number">
         <div class="content">
             <div class="head">
-                <div class="flex-cell people-number">报名 (2)</div>
+                <div class="flex-cell people-number">报名 ({$apply_no_people})</div>
                 <div class="flex-cell">报名时间</div>
             </div>
+            {loop $sources_details $key $value}
             <div class="con-cell">
                 <div class="flex-con-cell">
-                    <img class="avatar-img" src="{$activity_userInfo['profile_photo']}" alt=""/>
-                    {$activity_userInfo['nickname']}
+                    <img class="avatar-img" src="{$value['avatar']}" alt=""/>
+                    {$value['nickname']}
                 </div>
                 <div class="date-time">
-                    <!--                    {$activity_data_details['date']} {$activity_data_details['time']}-->
-                    {php echo date('m/d', strtotime($activity_data_details['date']));} {$activity_data_details['time']}
+                    {php echo date('m/d', strtotime($value['apply_time']));}
+                    {php echo date('H:i', strtotime($value['apply_time']));}
                 </div>
             </div>
-            <div class="con-cell">
-                <div class="flex-con-cell">
-                    <img class="avatar-img" src="{$activity_userInfo['profile_photo']}" alt=""/>
-                    {$activity_userInfo['nickname']}
-                </div>
-                <div class="date-time">
-                    {php echo date('m/d', strtotime($activity_data_details['date']));} {$activity_data_details['time']}
-                </div>
-            </div>
+            {/loop}
         </div>
     </div>
 
     <div class="footer">
+        <!--        {if $sources_details}-->
         <div class="view-btn apply">
-            <button onclick="apply()" class="button apply-btn">报名</button>
+            <input onclick="apply_unapply()" id="apply_unapply_btn" type="button" class="button apply-btn" value="取消报名">
         </div>
-        <div class="view-btn editor">
-            <button onclick="editor()" class="button editor-btn">编辑</button>
+        <!--        {else}-->
+        <!--        <div class="view-btn apply">-->
+        <!--            <button onclick="apply_unapply()" class="button apply-btn">报名</button>-->
+        <!--        </div>-->
+        <!--        {/if}-->
+
+        <div class="view-btn editor" style="display: none" id="editor_btn">
+            <button onclick="editor()" class="button editor-btn">编辑活动</button>
         </div>
-        <div class="view-btn join">
-            <button onclick="join()" class="button join-btn">加入</button>
-        </div>
+
     </div>
 
 </div>
 
 </body>
 
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>  <!-- jquery library -->
 <script src="{$_W['siteroot']}/addons/event_registration/js/mui.min.js"></script>
-<script>
-    mui.init({
-        swipeBack: true //启用右滑关闭功能
-    });
 
-    function share() {
-        console.log('share')
+<!--<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>  &lt;!&ndash; JSSDK use &ndash;&gt;-->
+
+<script>
+
+    window.onload = function () {
+        console.log('onLoad', '{php echo $aid_details}');
+
+        /*$.post("{php echo $this->createMobileUrl('setActivity');}", {
+            aid: data,
+            openid: localStorage.getItem('openid')
+          },
+          function (data, status) {
+            console.log('second result', data, status);
+            mui.toast("创建活动成功, 请稍候...");
+          }
+        );*/
+
+        /* let openid = localStorage.getItem("openid");
+         console.log(openid);
+         if ("{php echo $sources_details[0]['openid'];}" === openid) {
+           console.log('this is my apply activity')
+         }*/
+
+        // 自己创建的活动才能进行活动编辑
+        let openid = localStorage.getItem("openid");
+        // console.log(openid);
+        // console.log('{php echo $sql_is_apply_result[0]["openid"];}' === openid);
+        let editor_btn = document.getElementById('editor_btn');
+        if ("{php echo $sql_is_apply_result[0]['openid'];}" === openid) {
+            // $('#editor_btn').show();
+            editor_btn.style.display = 'block';
+        }
+
+
+        let apply_unapply_btn = $('#apply_unapply_btn').val();
+        console.log('>>>', $('#apply_unapply_btn').val());
+
+        if ('{php echo empty($sql_query_result);}') {
+            console.log('unapply')
+            $('#apply_unapply_btn').val('报名')
+            console.log('111>>>', $('#apply_unapply_btn').val());
+        } else {
+            console.log('is apply')
+            $('#apply_unapply_btn').val('取消报名')
+            console.log('111>>>', $('#apply_unapply_btn').val());
+        }
+
+    };
+
+    function apply_unapply() {
+
+        let apply_unapply_btn = document.getElementById('apply_unapply_btn');
+        let apply_unapply_btn_value = apply_unapply_btn.value;
+        console.log(apply_unapply_btn_value);
+        // console.log(openid);
+        let openid = localStorage.getItem("openid");
+
+        $.post("{php echo $this->createMobileUrl('isApplyQuery');}",
+            {
+                openid: localStorage.getItem('openid')
+            },
+            function (data, status) {
+                let arr = [];
+                console.log('isApplyQuery result', data, status);
+                data_f = JSON.parse(data);
+                for (let i = 0; i < data_f.length; i++) {
+                    arr.push(data_f[i].aid);
+                }
+                console.log('data_f: ', data_f)
+                console.log('arr: ', arr)
+                let ind = arr.indexOf('{php echo $aid_details;}')
+                console.log('{php echo $aid_details;}', ind)
+
+                let openid = localStorage.getItem("openid");
+                // 自己创建的活动取消报名，删除活动表及报名表
+                if ("{php echo $sql_is_apply_result[0]['openid'];}" === openid) {
+                    console.log('自建活动取消报名')
+                    $.post("{php echo $this->createMobileUrl('deleteActivityApplyMyself');}",
+                        {
+                            id: '{php echo $activity_id;}',
+                            openid: openid
+                        },
+                        function (data, status) {
+                            // console.log('id: ', '{php echo $activity_id;}');
+                            // console.log('openid: ', openid);
+                            // console.log('gpc openid: ', "{php echo $userinfo['openid'];}")
+                            // console.log('deleteActivityApplyMyself result', data, status);
+                            if (data === 'success') {
+                                mui.toast("取消报名成功, 请稍候...");
+
+                            }
+
+                        })
+                }
+
+                // if ('{php echo $aid_details;}') {
+                if ('{php echo empty($sql_query_result);}') {
+                    console.log('报名他人创建活动')
+                    $.post("{php echo $this->createMobileUrl('insertActivity');}",
+                        {
+                            aid: '{php echo $aid_details;}',
+                            openid: openid
+                        },
+                        function (data, status) {
+                            console.log('second result', data, status);
+                            mui.toast("报名成功, 请稍候...");
+                            setTimeout(function () {
+                                window.location.href = "{php echo $this->createMobileUrl('home_page');}"
+                            }, 2000);
+
+                        })
+
+                } else {
+
+                    console.log('取消报名他人创建活动')
+                    $.post("{php echo $this->createMobileUrl('deleteActivityApplyResult');}",
+                        {
+                            aid: '{php echo $aid_details;}',
+                            openid: openid
+                        },
+                        function (data, status) {
+                            // console.log('aid: ', '{php echo $aid_details;}');
+                            // console.log('openid: ', openid);
+                            // console.log('gpc openid: ', "{php echo $userinfo['openid'];}")
+                            // console.log('deleteActivityApplyResult result', data, status);
+                            if (data === 'success') {
+                                mui.toast("取消报名成功, 请稍候...");
+                                setTimeout(function () {
+                                    window.location.href = "{php echo $this->createMobileUrl('home_page');}"
+                                }, 2000);
+                            }
+
+                        })
+
+                }
+
+            })
+
+
     }
 
     function editor() {
         console.log('editor');
-        window.location.href = "{php echo $this->createMobileUrl('editor_event');}"
+        window.location.href = "{php echo $this->createMobileUrl('create_event_editor');}" + '&aid=' + '{php echo $aid_details;}'
     }
+
 </script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<!-- wechat share -->
+<script>
+
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{$jssdk['appId']}", // 必填，公众号的唯一标识
+        timestamp: "{$jssdk['timestamp']}", // 必填，生成签名的时间戳
+        nonceStr: "{$jssdk['nonceStr']}", // 必填，生成签名的随机串
+        signature: "{$jssdk['signature']}", // 必填，签名
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]  // 必填，需要使用的JS接口列表
+    });
+
+    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+    wx.ready(function () {  //需在用户可能点击分享按钮前就先调用
+
+        // wx.updateAppMessageShareData({ 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+        wx.onMenuShareAppMessage({  // 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
+            title: '{php echo $sources_details[0]["title"]}', // 分享标题
+            desc: '{php echo $sources_details[0]["description"]}', // 分享描述
+            link: 'http://we7.think2009.com/app/index.php?i=7&c=entry&do=details&m=event_registration&aid=' + '{php echo $aid_details}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: "{php echo $sources_details[0]['img_url']}", // 分享图标
+            trigger: function (res) { // 设置成功
+                //  alert('用户点击发送给朋友');
+            },
+            cancel: function (res) {
+                alert('已取消');
+            },
+            success: function (res) {
+                alert('已分享');
+                setTimeout(function () {
+                    alert('分享成功, 即将跳转到首页')
+                    window.location.href = "{php echo $this->createMobileUrl('home_page');}"
+                }, 1000)
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+        // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+        wx.onMenuShareTimeline({
+            title: '{php echo $sources_details[0]["title"]}', // 分享标题
+            desc: '{php echo $sources_details[0]["description"]}', // 分享描述
+            link: 'http://we7.think2009.com/app/index.php?i=7&c=entry&do=details&m=event_registration&aid=' + '{php echo $aid_details}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: "{php echo $sources_details[0]['img_url']}", // 分享图标
+            trigger: function (res) { // 设置成功
+                //  alert('用户点击发送给朋友');
+            },
+            cancel: function (res) {
+                alert('已取消');
+            },
+            success: function (res) {
+                alert('已分享');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+    });
+
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+    wx.error(function (res) {
+        alert("error: " + res.errMsg);
+    });
+
+</script>
+
 </html>

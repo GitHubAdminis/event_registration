@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>活动小助手</title>
     <style>
         body {
             margin: 0;
@@ -16,46 +19,63 @@
             background-size: 100% 100%;
         }
 
-        .add-btn {
-            color: white;
-            background-color: #fb7457;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 42px;
-            border: none;
+        .content {
             position: absolute;
             left: 50%;
+            width: 56px;
+            height: 56px;
             bottom: 100px;
-            margin-left: -22px;
+            margin-left: -28px;
         }
+
+        .add-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fb7457 url("{$_W['siteroot']}/addons/event_registration/images/add_btn_bg.png") no-repeat center;
+            background-size: 60%;
+        }
+
     </style>
 </head>
+
 <body>
 
 <div class="container"></div>
-<button class="add-btn" onclick="submit_btn()">+</button>
+
+<div class="content">
+  <div class="add-btn" onclick="add_btn()">
+    <!-- <img src="{$_W['siteroot']}/addons/event_registration/images/add_btn_bg.png" alt="" />-->
+  </div>
+
+</div>
 
 </body>
 
 <script>
 
     window.onload = function () {
-        let open_id = localStorage.getItem("openid")
-        if (!open_id) {
-            localStorage.setItem("openid", "{php echo $userinfo['openid'];}")
-        }
-        // else {
-        //     window.location.href = "{php echo $this->createMobileUrl('home_page');}"
-        // }
+      let openid = localStorage.getItem("openid");
+      if (!openid) {
+        localStorage.setItem("openid", "{php echo $userinfo['openid'];}")
+      }
+      // else {
+      //     window.location.href = "{php echo $this->createMobileUrl('home_page');}"
+      // }
 
-        console.log(open_id)
-    }
+      console.log('getItem openid: ', openid);
 
-    function submit_btn() {
-        console.log("#submit_btn")
-        window.location.href = "{php echo $this->createMobileUrl('create_event');}"
+      if ('{php echo $is_hava_activity_apply_data}') {
+        console.log('{php echo $is_hava_activity_apply_data}')
+        window.location.href = "{php echo $this->createMobileUrl('home_page');}"
+      }
+
+    };
+
+    function add_btn() {
+      window.location.href = "{php echo $this->createMobileUrl('create_event_editor');}"
     }
 
 </script>
+
 </html>
